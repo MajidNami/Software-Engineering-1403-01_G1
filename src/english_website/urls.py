@@ -34,5 +34,5 @@ urlpatterns = [
     path("group7/", include("group7.urls")),
     path("group8/", include("group8.urls")),
     path("group9/", include("group9.urls")),
-
+    
 ]
