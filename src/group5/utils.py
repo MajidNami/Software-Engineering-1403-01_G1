@@ -50,9 +50,25 @@ class Meaning:
         }
     
 
+class Phonetic:
+    text = ""
+    audio_url = ""
+
+    def __init__(self, text, audio_url=None):
+        self.text = text
+        self.audio_url = audio_url
+
+    def to_dict(self):
+        return {
+            "text": self.text,
+            "audio_url": self.audio_url
+        }
+
 
 class Word:
     term = ""
+    us_phonetic = None
+    uk_phonetic = None
     meanings = []
 
     def __init__(self, term):
@@ -61,8 +77,17 @@ class Word:
     def addMeaning(self, meaning):
         self.meanings.append(meaning)
 
+    def setUSPhonetic(self, phonetic):
+        self.us_phonetic = phonetic
+
+    def setUKPhonetic(self, phonetic):
+        self.uk_phonetic = phonetic
+
+
     def to_dict(self):
         return {
             "term": self.term,
+            "us_phonetic": self.us_phonetic.to_dict() if self.us_phonetic is not None else None,
+            "uk_phonetic": self.uk_phonetic.to_dict() if self.uk_phonetic is not None else None,
             "meanings": [meaning.to_dict() for meaning in self.meanings]
         }

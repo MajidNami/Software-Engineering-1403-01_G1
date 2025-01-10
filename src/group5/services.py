@@ -11,19 +11,36 @@ class DictionaryAPI:
             DictionaryAPI.instance = DictionaryAPI()
         return DictionaryAPI.instance
 
+    def __set_phoentics(self, word: Word, phonetics: list):
+        for phonetic in phonetics:
+            if "text" not in phonetic:
+                phonetic_obj = Phonetic("")
+            else:
+                phonetic_obj = Phonetic(phonetic["text"])
 
-    def __make_word(self, data: dict) -> Word:
-        word = Word(data['word'])
+            # us format: */<term>-us.mp3
+            # uk format: */<term>-uk.mp3
+            if "audio" in phonetic:
+                phonetic_obj.audio_url = phonetic["audio"]
+                if phonetic["audio"].endswith("us.mp3"):
+                    word.us_phonetic = phonetic_obj
+                elif phonetic["audio"].endswith("uk.mp3"):
+                    word.uk_phonetic = phonetic_obj
 
-        for meaning in data['meanings']:
+    def __set_definitions(self, meaning: Meaning, definitions: list):
+        for definition in definitions:
+            if ('example' not in definition):
+                definition_obj = Definition(definition['definition'])
+            else :
+                definition_obj = Definition(definition['definition'], definition['example'])
+            meaning.addDefinition(definition_obj)
+
+    def __set_meanings(self, word: Word, meanings: list):
+        for meaning in meanings:
             meaning_obj = Meaning(meaning['partOfSpeech'])
 
-            for definition in meaning['definitions']:
-                if ('example' not in definition):
-                    definition_obj = Definition(definition['definition'])
-                else :
-                    definition_obj = Definition(definition['definition'], definition['example'])
-                meaning_obj.addDefinition(definition_obj)
+            if 'definitions' in meaning:
+                self.__set_definitions(meaning_obj, meaning['definitions'])
 
             for synonym in meaning['synonyms']:
                 meaning_obj.addSynonym(synonym)
@@ -32,6 +49,15 @@ class DictionaryAPI:
                 meaning_obj.addAntonym(antonym)
 
             word.addMeaning(meaning_obj)
+
+    def __make_word(self, data: dict) -> Word:
+        word = Word(data['word'])
+
+        if 'phonetics' in data:
+            self.__set_phoentics(word, data['phonetics'])
+
+        if 'meanings' in data:
+            self.__set_meanings(word, data['meanings'])
 
         return word
 
@@ -49,17 +75,6 @@ if __name__ == "__main__":
     word = api.fetch_word("lord")
 
     if word is not None:
-        print(f"Term: {word.term}")
-
-        for meaning in word.meanings:
-            print(f"Part of speech: {meaning.partOfSpeech}")
-
-            for definition in meaning.definitions:
-                print(f"Definition: {definition.definition}")
-                if definition.hasExample():
-                    print(f"Example: {definition.example}")
-
-            print(f"Synonyms: {', '.join(meaning.synonyms)}")
-            print(f"Antonyms: {', '.join(meaning.antonyms)}")
+        print(word.to_dict())
     else:
         print("Word not found")
