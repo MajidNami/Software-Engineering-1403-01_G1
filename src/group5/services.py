@@ -4,6 +4,13 @@ from .utils import *
 
 class DictionaryAPI:
     API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/"
+    instance = None
+
+    def getInstance():
+        if DictionaryAPI.instance is None:
+            DictionaryAPI.instance = DictionaryAPI()
+        return DictionaryAPI.instance
+
 
     def __make_word(self, data: dict) -> Word:
         word = Word(data['word'])

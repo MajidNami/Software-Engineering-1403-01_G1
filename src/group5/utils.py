@@ -10,6 +10,12 @@ class Definition:
 
     def hasExample(self):
         return self.example is not None
+    
+    def to_dict(self):
+        return {
+            "definition": self.definition,
+            "example": self.example
+        }
 
 class Meaning:
     partOfSpeech = ""
@@ -35,6 +41,14 @@ class Meaning:
     def hasAntonyms(self):
         return len(self.antonyms) > 0
     
+    def to_dict(self):
+        return {
+            "partOfSpeech": self.partOfSpeech,
+            "definitions": [definition.to_dict() for definition in self.definitions],
+            "synonyms": self.synonyms,
+            "antonyms": self.antonyms
+        }
+    
 
 
 class Word:
@@ -46,3 +60,9 @@ class Word:
 
     def addMeaning(self, meaning):
         self.meanings.append(meaning)
+
+    def to_dict(self):
+        return {
+            "term": self.term,
+            "meanings": [meaning.to_dict() for meaning in self.meanings]
+        }
