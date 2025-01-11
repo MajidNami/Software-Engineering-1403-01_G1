@@ -1,0 +1,1 @@
+THESARUS_API_KEY = "9lnWd98DAx2dVFcYiZbHKA==xgVdmreoLNcYoATi"

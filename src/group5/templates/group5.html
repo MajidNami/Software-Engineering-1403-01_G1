@@ -114,6 +114,7 @@
                 const response = await fetch(`./dictionary/${word}`);
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('Word details:', data);
                     const formattedContent = formatWordDetails(data);
                     document.getElementById('popupContent').innerHTML = formattedContent;
                     document.getElementById('popup').style.display = 'block';
@@ -156,6 +157,14 @@
                     content += '</ul></li>';
                 });
                 content += '</ul>';
+            }
+
+            // synonyms and antonyms
+            if (data.synonyms && data.synonyms.length > 0) {
+                content += '<p><strong>Synonyms:</strong> ' + data.synonyms.join(', ') + '</p>';
+            }
+            if (data.antonyms && data.antonyms.length > 0) {
+                content += '<p><strong>Antonyms:</strong> ' + data.antonyms.join(', ') + '</p>';
             }
 
             return content;
