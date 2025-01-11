@@ -1,0 +1,21 @@
+<!-- group9/templates/group9/questions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Writing - Questions</title>
+</head>
+<body>
+    <h1>Sample Questions for Writing</h1>
+    <ol>
+        {% for q in questions %}
+            <li>
+                <strong>Q{{ q.id }}: </strong>{{ q.body }}
+                <br>
+                <em>Sample Answer:</em> {{ q.answer }}
+            </li>
+        {% endfor %}
+    </ol>
+    <p><a href="{% url 'group9:writing_home' %}">Back Home</a></p>
+</body>
+</html>
