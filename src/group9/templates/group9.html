@@ -8,10 +8,11 @@
     <link rel="stylesheet" href="{% static 'base/home_style.css' %}">
 </head>
 <body>
-    <h1>Welcome to the Writing Service</h1>
-    <p>This is the home page for the Writing module.</p>
-    <ul>
-        <li><a href="{% url 'group9:show_questions' %}">See Sample Questions</a></li>
-    </ul>
+    <div class="welcome-container">
+        <h1>Welcome to the Writing Service</h1>
+        <ul>
+            <li><a href="{% url 'group9:show_questions' %}">See Sample Questions</a></li>
+        </ul>
+    </div>
 </body>
 </html>

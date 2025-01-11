@@ -1,61 +1,47 @@
-class Question:
-    def __init__(self, id, body, answer):
-        self.id = id
-        self.body = body
-        self.answer = answer
+# group9/models.py
+from django.db import models
+from django.contrib.auth.models import User
+
+class Question(models.Model):
+    body = models.TextField(verbose_name="Question Body")
+    answer = models.TextField(verbose_name="Answer")
 
     def __str__(self):
-        return f"Question(id={self.id}, body='{self.body}', answer='{self.answer}')"
+        return f"Q{self.id}: {self.body[:50]}..."
 
 
-class Exam:
-    def __init__(self, id, questions, score, user):
-        """
-        questions: لیستی از آبجکت‌های Question
-        score: نمره آزمون
-        user: نام یا شناسه‌ی کاربر شرکت‌کننده
-        """
-        self.id = id
-        self.questions = questions
-        self.score = score
-        self.user = user
+class Exam(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exams', verbose_name="کاربر")
+    questions = models.ManyToManyField(Question, related_name='exams', verbose_name="سوالات")
+    score = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name="نمره")
+    date_taken = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ آزمون")
 
     def __str__(self):
-        return f"Exam(id={self.id}, user='{self.user}', score={self.score})"
+        return f"آزمون {self.id} توسط {self.user.username}"
 
 
-class Report:
-    def __init__(self, user, exams):
-        """
-        exams: لیستی از آبجکت‌های Exam
-        """
-        self.user = user
-        self.exams = exams
+class Report(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='report', verbose_name="کاربر")
+    exams = models.ManyToManyField(Exam, related_name='reports', verbose_name="آزمون‌ها")
 
     def __str__(self):
-        return f"Report(user='{self.user}', exams_count={len(self.exams)})"
+        return f"گزارش {self.user.username}"
 
 
-class Resource:
-    def __init__(self, id, title, author, category):
-        self.id = id
-        self.title = title
-        self.author = author
-        self.category = category
+class Resource(models.Model):
+    title = models.CharField(max_length=255, verbose_name="عنوان")
+    author = models.CharField(max_length=255, verbose_name="نویسنده")
+    category = models.CharField(max_length=100, verbose_name="دسته‌بندی")
 
     def __str__(self):
-        return f"Resource(id={self.id}, title='{self.title}', category='{self.category}')"
+        return self.title
 
 
-class Exercise:
-    def __init__(self, id, user, questions, score):
-        """
-        questions: لیستی از آبجکت‌های Question
-        """
-        self.id = id
-        self.user = user
-        self.questions = questions
-        self.score = score
+class Exercise(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exercises', verbose_name="کاربر")
+    questions = models.ManyToManyField(Question, related_name='exercises', verbose_name="سوالات")
+    score = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name="نمره")
+    date_completed = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ تکمیل")
 
     def __str__(self):
-        return f"Exercise(id={self.id}, user='{self.user}', score={self.score})"
+        return f"تمرین {self.id} توسط {self.user.username}"
