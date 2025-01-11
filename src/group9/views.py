@@ -15,5 +15,5 @@ def show_questions(request):
         Question(id=2, body="Explain the importance of exercise.", answer="Exercising is important because..."),
         Question(id=3, body="What is your opinion on remote work?", answer="I think remote work is..."),
     ]
-    return render(request, 'group9/questions.html', {"questions": sample_questions})
+    return render(request, 'questions.html', {"questions": sample_questions})
 
