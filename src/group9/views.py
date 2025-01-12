@@ -4,7 +4,7 @@ from database.secret import (DB_NAME, DB_USER,
                      DB_PASSWORD,
                      DB_HOST,
                      DB_PORT)
-from .models import Question, Exam, Report, Resource, Exercise
+from .models import Question, Exam, Resource, Exercise, Report
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -14,7 +14,7 @@ db = query.create_db_connection(DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
 
 #creating question tabel
 create_question_query = """
-    CREATE TABLE IF NOT EXISTS `group9_question` (
+CREATE TABLE IF NOT EXISTS `group9_question` (
     `ID` INT NOT NULL AUTO_INCREMENT,
     `body` LONGTEXT NOT NULL,
     `answer` LONGTEXT NOT NULL,
@@ -25,10 +25,11 @@ query.create_table(db, create_question_query)
 
 #creating exam table
 create_exam_query = """
-    CREATE TABLE IF NOT EXISTS `group9_exam` (
+CREATE TABLE IF NOT EXISTS `group9_exam` (
     `ID` INT NOT NULL AUTO_INCREMENT,
     `user_id` INT NOT NULL,
     `questions` JSON NOT NULL,
+    `answers` JSON NOT NULL,
     `score` DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
     `date_taken` DATETIME(6) NOT NULL,
     PRIMARY KEY (`ID`),
@@ -39,6 +40,39 @@ create_exam_query = """
 );
 """
 query.create_table(db, create_exam_query)
+
+#creating resource table
+create_resource_query = """
+CREATE TABLE IF NOT EXISTS `group9_resource` (
+  `ID` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `author` VARCHAR(255) NOT NULL,
+  `category` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`)
+);
+"""
+query.create_table(db, create_resource_query)
+
+#creating exercise table 
+create_exercise_query = """
+CREATE TABLE IF NOT EXISTS `group9_exercise` (
+  `ID` INT NOT NULL AUTO_INCREMENT,
+  `user_id` INT NOT NULL,
+  `questions` JSON NOT NULL,
+  `answers` JSON NOT NULL,
+  `score` DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
+  `date_completed` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (`id`),
+  CONSTRAINT `exercise_user_fk`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `auth_user` (`id`)
+    ON DELETE CASCADE
+);
+"""
+query.create_table(db, create_exercise_query)
+
+
+
 
 
 
