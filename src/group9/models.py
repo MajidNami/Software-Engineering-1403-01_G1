@@ -10,14 +10,27 @@ class Question(models.Model):
         return f"Q{self.id}: {self.body[:50]}..."
 
 
+
 class Exam(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exams', verbose_name="کاربر")
-    questions = models.ManyToManyField(Question, related_name='exams', verbose_name="سوالات")
-    score = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name="نمره")
-    date_taken = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ آزمون")
+    # Store the user's ID as an integer (not tied to the Django User model)
+    user = models.PositiveIntegerField(verbose_name="شناسه کاربر")
+
+    # Store a list of question IDs (integers) as JSON
+    questions = models.JSONField(default=list, verbose_name="شناسه سوالات")
+
+    score = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0,
+        verbose_name="نمره"
+    )
+    date_taken = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="تاریخ آزمون"
+    )
 
     def __str__(self):
-        return f"آزمون {self.id} توسط {self.user.username}"
+        return f"Exam {self.id} (UserID: {self.user})"
 
 
 class Report(models.Model):
@@ -38,10 +51,22 @@ class Resource(models.Model):
 
 
 class Exercise(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='exercises', verbose_name="کاربر")
-    questions = models.ManyToManyField(Question, related_name='exercises', verbose_name="سوالات")
-    score = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name="نمره")
-    date_completed = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ تکمیل")
+    # Store the user's ID as a plain integer
+    user = models.PositiveIntegerField(verbose_name="شناسه کاربر")
+
+    # Store an array of question IDs (integers) in a JSON field
+    questions = models.JSONField(default=list, verbose_name="شناسه سوالات")
+
+    score = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        default=0,
+        verbose_name="نمره"
+    )
+    date_completed = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="تاریخ تکمیل"
+    )
 
     def __str__(self):
-        return f"تمرین {self.id} توسط {self.user.username}"
+        return f"تمرین {self.id} توسط کاربر {self.user}"
