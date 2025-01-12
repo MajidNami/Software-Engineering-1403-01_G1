@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.utils import timezone
 from database import query
 from database.secret import (DB_NAME, DB_USER,
                      DB_PASSWORD,
@@ -29,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `group9_exam` (
     `ID` INT NOT NULL AUTO_INCREMENT,
     `user_id` INT NOT NULL,
     `questions` JSON NOT NULL,
-    `answers` JSON NOT NULL,
+    `answers` JSON,
     `score` DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
     `date_taken` DATETIME(6) NOT NULL,
     PRIMARY KEY (`ID`),
@@ -59,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `group9_exercise` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `questions` JSON NOT NULL,
-  `answers` JSON NOT NULL,
+  `answers` JSON ,
   `score` DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
   `date_completed` DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`id`),
@@ -71,8 +72,16 @@ CREATE TABLE IF NOT EXISTS `group9_exercise` (
 """
 query.create_table(db, create_exercise_query)
 
+def sign_up_user(username, password, name, email, age):
 
 
+
+
+
+def start_exam(request):
+
+    # getting user id from user
+    pass
 
 
 
@@ -91,4 +100,6 @@ def show_questions(request):
         Question(id=3, body="What is your opinion on remote work?", answer="I think remote work is..."),
     ]
     return render(request, 'questions.html', {"questions": sample_questions})
+
+
 
