@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
+from registration import views
+from registration.database import query as regq
 from django.utils import timezone
 from database import query
 from database.secret import (DB_NAME, DB_USER,
@@ -7,6 +9,7 @@ from database.secret import (DB_NAME, DB_USER,
                      DB_PORT)
 from .models import Question, Exam, Resource, Exercise, Report
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 
 # Create your views here.
 
@@ -72,12 +75,9 @@ CREATE TABLE IF NOT EXISTS `group9_exercise` (
 """
 query.create_table(db, create_exercise_query)
 
-def sign_up_user(username, password, name, email, age):
-
-
-
-
-
+def sign_up_user(request):
+    return views.SignupPage(request)
+    
 def start_exam(request):
 
     # getting user id from user
@@ -88,7 +88,9 @@ def start_exam(request):
 
 
 def home(request):
+    views.SignupPage(request)
     return render (request , 'group9.html' , {'group_number': '9'})
+
 
 def show_questions(request):
     """
