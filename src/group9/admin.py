@@ -3,7 +3,7 @@ from .models import Question, Exam, Report, Resource, Exercise
 
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'body')
+    list_display = ('id', 'body', 'answer')
     search_fields = ('id','body', 'answer')
 
 

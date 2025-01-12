@@ -1,7 +1,48 @@
 from django.shortcuts import render
+from database import query
+from database.secret import (DB_NAME, DB_USER,
+                     DB_PASSWORD,
+                     DB_HOST,
+                     DB_PORT)
 from .models import Question, Exam, Report, Resource, Exercise
+from django.contrib.auth.models import User
 
 # Create your views here.
+
+#connectiong to the cloud database
+db = query.create_db_connection(DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
+
+#creating question tabel
+create_question_query = """
+    CREATE TABLE IF NOT EXISTS `group9_question` (
+    `ID` INT NOT NULL AUTO_INCREMENT,
+    `body` LONGTEXT NOT NULL,
+    `answer` LONGTEXT NOT NULL,
+    PRIMARY KEY (`id`)
+);
+"""
+query.create_table(db, create_question_query)
+
+#creating exam table
+create_exam_query = """
+    CREATE TABLE IF NOT EXISTS `group9_exam` (
+    `ID` INT NOT NULL AUTO_INCREMENT,
+    `user_id` INT NOT NULL,
+    `questions` JSON NOT NULL,
+    `score` DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
+    `date_taken` DATETIME(6) NOT NULL,
+    PRIMARY KEY (`ID`),
+    CONSTRAINT `group9_exam_user_id_fk`
+        FOREIGN KEY (`user_id`)
+        REFERENCES `auth_user` (`id`)
+        ON DELETE CASCADE
+);
+"""
+query.create_table(db, create_exam_query)
+
+
+
+
 
 def home(request):
     return render (request , 'group9.html' , {'group_number': '9'})
