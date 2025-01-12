@@ -11,12 +11,16 @@ from .models import Question, Exam, Resource, Exercise, Report
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.contrib.auth import authenticate,login,logout
+import json
+import datetime
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
 
 #connectiong to the cloud database
 db = query.create_db_connection(DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
+cursor = db.cursor()
 
 #creating question tabel
 create_question_query = """
@@ -33,7 +37,7 @@ query.create_table(db, create_question_query)
 create_exam_query = """
 CREATE TABLE IF NOT EXISTS `group9_exam` (
     `ID` INT NOT NULL AUTO_INCREMENT,
-    `user_id` INT NOT NULL,
+    `user_id` VARCHAR(50) NOT NULL,
     `questions` JSON NOT NULL,
     `answers` JSON,
     `score` DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
@@ -41,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `group9_exam` (
     PRIMARY KEY (`ID`),
     CONSTRAINT `group9_exam_user_id_fk`
         FOREIGN KEY (`user_id`)
-        REFERENCES `auth_user` (`id`)
+        REFERENCES `users` (`username`)
         ON DELETE CASCADE
 );
 """
@@ -125,11 +129,80 @@ def login_user(request):
     return render (request,'login.html')
 
 
+
+
+@login_required
 def start_exam(request):
+    # GET: fetch 3 random questions
+    if request.method != 'POST':
+        select_random = """
+            SELECT *
+            FROM group9_question
+            ORDER BY RAND()
+            LIMIT 3;
+        """
+        cursor.execute(select_random)
+        random_questions = cursor.fetchall()  # e.g. [(1, 'text', 'a', 'b', 'c', 'd', 'c'), ...]
 
-    # getting user id from user
-    pass
+        request.session['random_questions'] = random_questions
 
+
+        # 2) Pass them to the template
+        return render(request, 'start_exam.html', {
+            'questions': random_questions
+        })
+
+    else:  # request.method == 'POST'
+        random_questions = request.session.get('random_questions', [])
+        # 1) Retrieve question IDs that were passed via hidden inputs
+        question_ids = request.POST.getlist('question_ids')  # e.g. ['1','2','3']
+        print("Submitted question IDs:", question_ids)
+
+        # 2) Collect user answers
+        user_answers = {}
+        for q_id in question_ids:
+            field_name = f'answer_{q_id}'            # e.g. 'answer_1'
+            user_answers[q_id] = request.POST.get(field_name, '')  # user-chosen answer
+        print()
+        print(user_answers)
+
+        # 3) Calculate the number of correct answers
+        total_correct = 0
+        for q in random_questions:
+            q_id = str(q[0])        # Because q might be (5, "What is ...", "4")
+            q_correct_answer = q[2] # "4"
+            
+            if q_id in user_answers:  # Make sure user answered this question
+                user_answer = user_answers[q_id]
+                if user_answer == q_correct_answer.strip().lower():
+                    total_correct += 1
+                    
+        # 4) Convert raw score to a score out of 20
+        #    (since 3 questions max → 3 points total)
+        raw_score = (total_correct / 3) * 20
+        final_score = round(raw_score, 2)
+
+        # 5) Convert data to JSON for insertion
+        questions_json = json.dumps(question_ids)
+        answers_json = json.dumps(user_answers)
+
+        # 6) Insert into group9_exam table
+        insert_sql = """
+            INSERT INTO `group9_exam` (user_id, questions, answers, score, date_taken)
+            VALUES (%s, %s, %s, %s, %s)
+        """
+        params = [
+            request.session.get('cur_uname'),  # or replace with an actual user ID
+            questions_json,
+            answers_json,
+            final_score,
+            datetime.datetime.now()
+        ]
+        cursor.execute(insert_sql, params)
+
+        # 7) Return a response
+        return HttpResponse(f"Exam submitted! Your score is {final_score} out of 20.")
+    
 
 def mainpage(request):
     return render (request , 'mainpage.html')
