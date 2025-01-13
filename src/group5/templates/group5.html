@@ -144,7 +144,8 @@
         <h1>خوش آمدید به گروه {{ group_number }}
             میکروسرویس خود را اینجا توسعه دهید
         </h1>
-        <p id="content">This is a content for testing</p>
+        <p id="content">This is a passage for testing:
+        The curious fox wandered cautiously through the dense forest, its sleek fur glinting under the pale moonlight. Every rustle of the leaves and every distant howl heightened its vigilance. The fox’s quest was for a small stream, a source of refreshment in the otherwise parched wilderness. Along the way, it stumbled upon an abandoned cottage, its rickety door creaking in the cold night breeze. Intrigued but wary, the fox peeked inside, only to find a trove of dusty artifacts scattered across the floor—remnants of a time long past.</p>
     </div>
 
     <!-- Loading Indicator -->
@@ -229,6 +230,17 @@
                     content += '</ul></li>';
                 });
                 content += '</ul></div><div class="divider"></div>';
+            }
+            // synonyms and antonyms:
+            if (data.synonyms && data.synonyms.length > 0) {
+                content += '<div class="meanings"><p><strong>Synonyms:</strong></p><p>';
+                content += data.synonyms.join(', ');
+                content += '</p></div><div class="divider"></div>';
+            }
+            if (data.antonyms && data.antonyms.length > 0) {
+                content += '<div class="meanings"><p><strong>Antonyms:</strong></p><p>';
+                content += data.antonyms.join(', ');
+                content += '</p></div><div class="divider"></div>';
             }
 
             return content;
