@@ -2,18 +2,72 @@
 {% load static %}
 <html lang="fa">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحه خانه</title>
-    <link rel="stylesheet" href="{% static 'base/home_style.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>صفحه خانه</title>
+  <!-- Google Font (Optional) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Reset & basic styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    /* Container styles */
+    .welcome-container {
+      background-color: #fff;
+      width: 600px;
+      max-width: 90%;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      direction: rtl; /* Ensures right-to-left direction for Persian */
+    }
+    /* Heading styles */
+    .welcome-container h1 {
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+    /* List & link styles */
+    .welcome-container ul {
+      list-style-type: none;
+    }
+    .welcome-container li {
+      margin: 1rem 0;
+    }
+    .welcome-container a {
+      color: #6ca0dc;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    .welcome-container a:hover {
+      color: #5889c5;
+    }
+  </style>
 </head>
 <body>
-    <div class="welcome-container">
-        <h1>Welcome to the Writing Service</h1>
-        <ul>
-            <li><a href="{% url 'group9:Signup' %}">Signup</a></li>
-            <li><a href="{% url 'group9:login' %}">Login</a></li>
-        </ul>
-    </div>
+  <div class="welcome-container">
+    <h1>Welcome to the Writing Service</h1>
+    <ul>
+      <li><a href="{% url 'group9:Signup' %}">Signup</a></li>
+      <li><a href="{% url 'group9:login' %}">Login</a></li>
+    </ul>
+  </div>
 </body>
 </html>

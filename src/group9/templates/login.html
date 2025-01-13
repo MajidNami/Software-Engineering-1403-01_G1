@@ -3,25 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <title>Login</title>
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .login-container {
+      background-color: #fff;
+      width: 350px;
+      max-width: 90%;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-container h1 {
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #333;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #6ca0dc;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #6ca0dc;
+      color: #fff;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: #5889c5;
+    }
+  </style>
 </head>
 <body>
-  <h1>Login Page</h1>
-  <form method="POST" action="">
-    {% csrf_token %}
-    
-    <!-- Username -->
-    <div>
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required />
-    </div>
-    
-    <!-- Password -->
-    <div>
-      <label for="pass">Password:</label>
-      <input type="password" id="pass" name="pass" required />
-    </div>
-    
-    <button type="submit">Login</button>
-  </form>
+  <div class="login-container">
+    <h1>Login Page</h1>
+    <form method="POST" action="">
+      {% csrf_token %}
+      
+      <!-- Username -->
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          required
+        />
+      </div>
+      
+      <!-- Password -->
+      <div class="form-group">
+        <label for="pass">Password:</label>
+        <input
+          type="password"
+          id="pass"
+          name="pass"
+          required
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-submit">Login</button>
+    </form>
+  </div>
 </body>
 </html>

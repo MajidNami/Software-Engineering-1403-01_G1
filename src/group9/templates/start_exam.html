@@ -3,13 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <title>Start Exam</title>
+  <!-- Google Font (Optional) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .exam-container {
+      background-color: #fff;
+      width: 700px;
+      max-width: 95%;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    .exam-container h1 {
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    form {
+      margin-top: 1.5rem;
+    }
+    .question-block {
+      margin-bottom: 1.5rem;
+    }
+    .question-block p {
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #333;
+    }
+    .question-block label {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: #555;
+    }
+    .question-block input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      outline: none;
+    }
+    .question-block input[type="text"]:focus {
+      border-color: #6ca0dc;
+    }
+    .btn-submit {
+      display: block;
+      margin: 0 auto;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #6ca0dc;
+      color: #fff;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    .btn-submit:hover {
+      background-color: #5889c5;
+    }
+  </style>
 </head>
 <body>
-  <h1>Start Exam</h1>
-  <form method="POST">
-    {% csrf_token %}
-    
-    {% for q in questions %}
+  <div class="exam-container">
+    <h1>Start Exam</h1>
+    <form method="POST">
+      {% csrf_token %}
+      
+      {% for q in questions %}
+      <div class="question-block">
         <!-- q[0] = question ID, q[1] = question body, q[2] = (correct) answer -->
         
         <!-- 1) Hidden input storing the question ID -->
@@ -20,17 +101,18 @@
         
         <!-- 3) Field for user to input their answer (open-ended) -->
         <label for="answer_{{ q.0 }}">Your answer:</label>
-        <input 
-            type="text" 
-            name="answer_{{ q.0 }}" 
-            id="answer_{{ q.0 }}" 
-            placeholder="Type your answer here"
+        <input
+          type="text"
+          name="answer_{{ q.0 }}"
+          id="answer_{{ q.0 }}"
+          placeholder="Type your answer here"
         >
-        <br><br>
-    {% endfor %}
-    
-    <!-- 4) Submission button -->
-    <button type="submit">Submit Exam</button>
-</form>
+      </div>
+      {% endfor %}
+      
+      <!-- 4) Submission button -->
+      <button type="submit" class="btn-submit">Submit Exam</button>
+    </form>
+  </div>
 </body>
 </html>

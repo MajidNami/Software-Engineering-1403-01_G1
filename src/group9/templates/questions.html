@@ -2,20 +2,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Writing - Questions</title>
+  <meta charset="UTF-8">
+  <title>Writing - Questions</title>
+  <!-- Google Font (Optional) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Reset & basic styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    /* Container for questions */
+    .questions-container {
+      background-color: #fff;
+      width: 700px;
+      max-width: 90%;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    /* Heading */
+    .questions-container h1 {
+      text-align: center;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+    /* Ordered list */
+    ol {
+      margin-left: 1.5rem;
+    }
+    li {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      color: #555;
+    }
+    strong {
+      font-weight: 600;
+      color: #333;
+    }
+    em {
+      color: #777;
+      font-style: italic;
+    }
+    /* Back Home button styles */
+    .back-home-btn {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #6ca0dc;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    .back-home-btn:hover {
+      background-color: #5889c5;
+    }
+    /* Center the button */
+    .button-container {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
+  <div class="questions-container">
     <h1>Sample Questions for Writing</h1>
     <ol>
-        {% for q in questions %}
-            <li>
-                <strong>Q{{ q.id }}: </strong>{{ q.body }}
-                <br>
-                <em>Sample Answer:</em> {{ q.answer }}
-            </li>
-        {% endfor %}
+      {% for q in questions %}
+      <li>
+        <strong>Q{{ q.id }}:</strong> {{ q.body }}<br>
+        <em>Sample Answer:</em> {{ q.answer }}
+      </li>
+      {% endfor %}
     </ol>
-    <p><a href="{% url 'group9:group9' %}">Back Home</a></p>
+    <div class="button-container">
+      <!-- Link back to home, styled as a button -->
+      <a href="{% url 'group9:group9' %}" class="back-home-btn">Back Home</a>
+    </div>
+  </div>
 </body>
 </html>

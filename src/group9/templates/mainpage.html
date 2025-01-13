@@ -1,18 +1,75 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="fa">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحه خانه</title>
-    <link rel="stylesheet" href="{% static 'base/home_style.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Page</title>
+  <!-- Google Font (Optional) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Reset & basic styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to bottom right, #a1c4fd, #c2e9fb);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    /* Container styles */
+    .welcome-container {
+      background-color: #fff;
+      width: 600px;
+      max-width: 90%;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    /* Heading styles */
+    .welcome-container h1 {
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+    /* Button styles */
+    .btn-start-exam {
+      background-color: #6ca0dc;
+      color: #fff;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-weight: 600;
+    }
+    .btn-start-exam:hover {
+      background-color: #5889c5;
+    }
+  </style>
 </head>
 <body>
-    <div class="welcome-container">
-        <h1>Welcome to the Writing Service</h1>
-        <ul>
-            <li><a href="{% url 'group9:start_exam' %}">start_exam</a></li>
-        </ul>
-    </div>
+  <div class="welcome-container">
+    <h1>Welcome to the Writing Service</h1>
+    
+    <!-- Start Exam Button -->
+    <button
+      class="btn-start-exam"
+      onclick="window.location.href='{% url 'group9:start_exam' %}'"
+    >
+      Start Exam
+    </button>
+  </div>
 </body>
 </html>
