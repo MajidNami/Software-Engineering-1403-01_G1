@@ -12,8 +12,8 @@
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%;
-            max-height: 40%;
+            width: 100%; /* Full width */
+            max-height: 30%; /* Adjusted height */
             overflow-y: auto;
             padding: 10px;
             background: #fff;
@@ -22,6 +22,8 @@
             border-top: 2px solid #ccc;
             border-radius: 10px 10px 0 0;
             font-family: Arial, sans-serif;
+            resize: vertical;
+            overflow: auto; /* Allow scroll for content */
         }
 
         .popup h2 {
@@ -39,11 +41,12 @@
 
         .popup .search-container {
             display: flex;
+            align-items: center;
             margin-bottom: 10px;
         }
 
         .popup .search-container input {
-            flex: 1;
+            width: 6cm;
             padding: 5px;
             font-size: 14px;
             border: 1px solid #ccc;
@@ -58,6 +61,14 @@
             border: none;
             border-radius: 0 5px 5px 0;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup .search-container button img {
+            width: 20px;
+            height: 20px;
         }
 
         .popup .search-container button:hover {
@@ -76,24 +87,84 @@
         .popup-content li {
             margin-bottom: 5px;
         }
+
+        /* Divider */
+        .divider {
+            border-top: 2px solid purple;
+            margin: 10px 0;
+        }
+
+        /* Voice Icon */
+        .voice-icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .voice-icon img {
+            width: 32px;
+            height: 32px;
+        }
+
+        /* Highlight background for meanings */
+        .meanings {
+            background-color: #fff9c4; /* Light yellow */
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* Loading indicator */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+        }
+
+        .loading img {
+            display: block;
+            margin: 0 auto;
+            width: 300px; /* 4x size */
+            height: 300px; /* 4x size */
+        }
+
+        /* Blurred background when loading */
+        .blurred {
+            filter: blur(5px);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
-    <div class="welcome-container">
+    <div class="welcome-container" id="mainContent">
         <h1>خوش آمدید به گروه {{ group_number }}
             میکروسرویس خود را اینجا توسعه دهید
         </h1>
-        <p id="content">This is a test sentence.</p>
+        <p id="content">This is a content for testing</p>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div class="loading" id="loading">
+        <img src="https://i.gifer.com/YCZH.gif" alt="Loading">
     </div>
 
     <!-- Pop-up Window -->
     <div class="popup" id="popup" style="display: none;">
         <span class="close" id="closePopup">&times;</span>
-        <h2>Word Details</h2>
-        <div class="search-container">
-            <input type="text" id="searchBox" placeholder="Enter a word to search">
-            <button id="searchButton">Search</button>
+        <div style="background-color: darkgreen; padding: 10px; border-radius: 5px;">
+            <h2>Word Details</h2>
+            <div class="search-container">
+                <input type="text" id="searchBox" placeholder="Enter a word to search">
+                <button id="searchButton">
+                    <img src="https://img.icons8.com/ios-filled/50/000000/search--v1.png" alt="Search">
+                </button>
+            </div>
         </div>
+        <div class="divider"></div>
         <div class="popup-content" id="popupContent">
             <!-- Dynamic content will be injected here -->
         </div>
@@ -105,7 +176,9 @@
             const word = selection.toString().trim();
 
             if (word) {
+                showLoading();
                 await fetchAndDisplayWord(word);
+                hideLoading();
             }
         });
 
@@ -114,7 +187,6 @@
                 const response = await fetch(`./dictionary/${word}`);
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Word details:', data);
                     const formattedContent = formatWordDetails(data);
                     document.getElementById('popupContent').innerHTML = formattedContent;
                     document.getElementById('popup').style.display = 'block';
@@ -130,21 +202,21 @@
         }
 
         function formatWordDetails(data) {
-            let content = `<p><strong>Term:</strong> ${data.term}</p>`;
+            let content = `<p><strong>Term:</strong> ${data.term}</p><div class='divider'></div>`;
 
             if (data.us_phonetic || data.uk_phonetic) {
                 content += '<p><strong>Phonetics:</strong></p><ul>';
                 if (data.us_phonetic) {
-                    content += `<li>US: ${data.us_phonetic.text} <audio controls src="${data.us_phonetic.audio_url}"></audio></li>`;
+                    content += `<li>US: ${data.us_phonetic.text} <span class="voice-icon"><img src="https://img.icons8.com/ios-filled/50/000000/speaker.png" alt="Play" onclick="playAudio('${data.us_phonetic.audio_url}')"></span></li>`;
                 }
                 if (data.uk_phonetic) {
-                    content += `<li>UK: ${data.uk_phonetic.text} <audio controls src="${data.uk_phonetic.audio_url}"></audio></li>`;
+                    content += `<li><span style="border: 2px solid red; padding: 2px;">UK: ${data.uk_phonetic.text} </span><span class="voice-icon"><img src="https://img.icons8.com/ios-filled/50/000000/speaker.png" alt="Play" onclick="playAudio('${data.uk_phonetic.audio_url}')"></span></li>`;
                 }
-                content += '</ul>';
+                content += '</ul><div class="divider"></div>';
             }
 
             if (data.meanings && data.meanings.length > 0) {
-                content += '<p><strong>Meanings:</strong></p><ul>';
+                content += '<div class="meanings"><p><strong>Meanings:</strong></p><ul>';
                 data.meanings.forEach(meaning => {
                     content += `<li><strong>${meaning.partOfSpeech}:</strong><ul>`;
                     meaning.definitions.forEach(def => {
@@ -156,18 +228,25 @@
                     });
                     content += '</ul></li>';
                 });
-                content += '</ul>';
-            }
-
-            // synonyms and antonyms
-            if (data.synonyms && data.synonyms.length > 0) {
-                content += '<p><strong>Synonyms:</strong> ' + data.synonyms.join(', ') + '</p>';
-            }
-            if (data.antonyms && data.antonyms.length > 0) {
-                content += '<p><strong>Antonyms:</strong> ' + data.antonyms.join(', ') + '</p>';
+                content += '</ul></div><div class="divider"></div>';
             }
 
             return content;
+        }
+
+        function playAudio(url) {
+            const audio = new Audio(url);
+            audio.play();
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('mainContent').classList.add('blurred');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('mainContent').classList.remove('blurred');
         }
 
         document.getElementById('closePopup').addEventListener('click', function () {
@@ -177,7 +256,8 @@
         document.getElementById('searchButton').addEventListener('click', function () {
             const searchWord = document.getElementById('searchBox').value.trim();
             if (searchWord) {
-                fetchAndDisplayWord(searchWord);
+                showLoading();
+                fetchAndDisplayWord(searchWord).then(hideLoading);
             }
         });
 
@@ -185,10 +265,11 @@
             if (event.key === 'Enter') {
                 const searchWord = document.getElementById('searchBox').value.trim();
                 if (searchWord) {
-                    fetchAndDisplayWord(searchWord);
+                    showLoading();
+                    fetchAndDisplayWord(searchWord).then(hideLoading);
                 }
             }
         });
-    </script>
-</body>
+        </script>
+    </body>
 </html>
