@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - ReadingApp</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .error-container {
+            text-align: center;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-container h1 {
+            font-size: 3em;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+
+        .error-container p {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .error-container a {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            text-decoration: none;
+            background: #007bff;
+            color: #fff;
+            transition: background 0.3s ease;
+        }
+
+        .error-container a:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <h1>Error</h1>
+        <p>Sorry, something went wrong. Please try again later.</p>
+        <a href="{%url 'group4:group4'%}">Go to Homepage</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,153 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Reading Test - ReadingApp</title>
+    <link rel="stylesheet" href="{%static 'styles.css'%}" />
+    <style>
+      
+    </style>
+  </head>
+  <body>
+    <header>
+        <div class="navbar">
+            <div class="logo">ReadingApp</div>
+            <ul class="nav-links">
+                <li><a href="teacher-dashboard.html">Dashboard</a></li>
+                <li><a href="{%url 'group4:g4logout'%}">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+      <section class="form-section">
+        <h2>Create Reading Test</h2>
+        <form id="reading-test-form" action="{%url 'group4:g4createReading'%}" method="POST">
+            {%csrf_token%}
+          <div class="form-group">
+            <label for="test-title">Test Title</label>
+            <input type="text" id="test-title" name="test-title" required />
+          </div>
+          <div class="form-group">
+            <label for="main-text">Main Passage</label>
+            <textarea id="main-text" name="main-text" rows="10" required></textarea>
+          </div>
+
+          <div class="form-group-new">
+            <label for="reading-level">Reading Level</label>
+            <select id="reading-level" name="reading-level" required>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+            </select>
+          </div>
+
+          <!-- Question 1 -->
+          <div class="form-group question-group">
+            <label for="question-1">Question 1</label>
+            <input type="text" id="question-1" name="question-1" required>
+            <div class="answers-container">
+              <div class="form-group answer-group">
+                <label for="question-1-answer-1">Answer 1</label>
+                <input type="text" id="question-1-answer-1" name="question-1-answer-1" required>
+                <input type="radio" id="question-1-correct-1" name="question-1-correct" value="1" required>
+                <label for="question-1-correct-1">Correct</label>
+              </div>
+              <div class="form-group answer-group">
+                <label for="question-1-answer-2">Answer 2</label>
+                <input type="text" id="question-1-answer-2" name="question-1-answer-2" required>
+                <input type="radio" id="question-1-correct-2" name="question-1-correct" value="2" required>
+                <label for="question-1-correct-2">Correct</label>
+              </div>
+              <div class="form-group answer-group">
+                <label for="question-1-answer-3">Answer 3</label>
+                <input type="text" id="question-1-answer-3" name="question-1-answer-3" required>
+                <input type="radio" id="question-1-correct-3" name="question-1-correct" value="3" required>
+                <label for="question-1-correct-3">Correct</label>
+              </div>
+              <div class="form-group answer-group">
+                <label for="question-1-answer-4">Answer 4</label>
+                <input type="text" id="question-1-answer-4" name="question-1-answer-4" required>
+                <input type="radio" id="question-1-correct-4" name="question-1-correct" value="4" required>
+                <label for="question-1-correct-4">Correct</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 2 -->
+          <div class="form-group question-group">
+            <label for="question-2">Question 2</label>
+            <input type="text" id="question-2" name="question-2" required>
+            <div class="answers-container">
+              <div class="form-group answer-group">
+                <label for="question-2-answer-1">Answer 1</label>
+                <input type="text" id="question-2-answer-1" name="question-2-answer-1" required>
+                <input type="radio" id="question-2-correct-1" name="question-2-correct" value="1" required>
+                <label for="question-2-correct-1">Correct</label>
+              </div>
+              <div class="form-group answer-group">
+                <label for="question-2-answer-2">Answer 2</label>
+                <input type="text" id="question-2-answer-2" name="question-2-answer-2" required>
+                <input type="radio" id="question-2-correct-2" name="question-2-correct" value="2" required>
+                <label for="question-2-correct-2">Correct</label>
+              </div>
+              <div class="form-group answer-group">
+                <label for="question-2-answer-3">Answer 3</label>
+                <input type="text" id="question-2-answer-3" name="question-2-answer-3" required>
+                <input type="radio" id="question-2-correct-3" name="question-2-correct" value="3" required>
+                <label for="question-2-correct-3">Correct</label>
+              </div>
+              <div class="form-group answer-group">
+                <label for="question-2-answer-4">Answer 4</label>
+                <input type="text" id="question-2-answer-4" name="question-2-answer-4" required>
+                <input type="radio" id="question-2-correct-4" name="question-2-correct" value="4" required>
+                <label for="question-2-correct-4">Correct</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="form-group question-group">
+            <label for="question-3">Question 3</label>
+            <input type="text" id="question-3" name="question-3" required>
+            <div class="answers-container">
+              <div class="form-group answer-group">
+                <label for="question-3-answer-1">Answer 1</label>
+                <input type="text" id="question-3-answer-1" name="question-3-answer-1" required>
+                <input type="radio" id="question-3-correct-1" name="question-3-correct" value="1" required>
+                <label for="question-3-correct-1">Correct</label>
+              </div>
+              <div class="form-group answer-group">
+                <label for="question-3-answer-2">Answer 2</label>
+                <input type="text" id="question-3-answer-2" name="question-3-answer-2" required>
+                <input type="radio" id="question-3-correct-2" name="question-3-correct" value="2" required>
+                <label for="question-3-correct-2">Correct</label>
+              </div>
+              <div class="form-group answer-group">
+                <label for="question-3-answer-3">Answer 3</label>
+                <input type="text" id="question-3-answer-3" name="question-3-answer-3" required>
+                <input type="radio" id="question-3-correct-3" name="question-3-correct" value="3" required>
+                <label for="question-3-correct-3">Correct</label>
+              </div>
+              <div class="form-group answer-group">
+                <label for="question-3-answer-4">Answer 4</label>
+                <input type="text" id="question-3-answer-4" name="question-3-answer-4" required>
+                <input type="radio" id="question-3-correct-4" name="question-3-correct" value="4" required>
+                <label for="question-3-correct-4">Correct</label>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn primary">Submit Test</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2025 ReadingApp. All rights reserved.</p>
+    </footer>
+
+  </body>
+</html>

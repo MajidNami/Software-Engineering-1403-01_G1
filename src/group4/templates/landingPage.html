@@ -1,0 +1,45 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Microservice</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+
+    <main>
+        <section class="hero">
+            <h1>Reading Microservice</h1>
+            <p>Join our platform to practice and master reading skills for TOEFL and beyond!</p>
+            <div class="cta-buttons">
+                <a href="{% url 'group4:g4signup' %}" class="btn secondary">Sign Up</a>
+                <a href="{% url 'group4:g4login' %}" class="btn secondary">Login</a> 
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <h2>Why Choose Us?</h2>
+            <div class="feature-cards">
+                <div class="card">
+                    <h3>Interactive Practice</h3>
+                    <p>Access customized reading materials designed for all levels.</p>
+                </div>
+                <div class="card">
+                    <h3>Real-Time Feedback</h3>
+                    <p>Analyze your progress with detailed reports and recommendations.</p>
+                </div>
+                <div class="card">
+                    <h3>TOEFL Preparation</h3>
+                    <p>Simulated tests to help you ace your TOEFL reading section.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Software Engineering Project - Reading App</p>
+    </footer>
+</body>
+</html>

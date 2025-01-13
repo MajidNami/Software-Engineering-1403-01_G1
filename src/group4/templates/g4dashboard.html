@@ -1,0 +1,143 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ReadingApp</title>
+    <link rel="stylesheet" href="{%static 'styles.css'%}">
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">ReadingApp</div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="{%url 'group4:g4logout'%}" class="btn secondary">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-container">
+        <section class="welcome-section">
+            <h1>Welcome, {{username}}</h1>
+            <p>Track your progress, start a new test, or access educational content.</p>
+        </section>
+
+        <section class="actions-section">
+            <div class="action-card">
+                <h2>Select Tests</h2>
+                <p>Choose the right tests based on your level and practice effectively.</p>
+                <a href="select-tests.html" class="btn secondary">Go to Tests</a>
+            </div>
+            <div class="action-card">
+                <h2>Enroll in Courses</h2>
+                <p>Select new courses and add them to your personalized dashboard.</p>
+                <a href="select-courses.html" class="btn secondary">Select Courses</a>
+            </div>
+            <div class="action-card">
+                <h2>View Test Results</h2>
+                <p>Get detailed results and feedback on your performance.</p>
+                <a href="test-results.html" class="btn secondary">View Results</a>
+            </div>
+            <div class="action-card">
+                <h2>Educational Content</h2>
+                <p>Access articles, texts, and videos to enhance your reading skills.</p>
+                <a href="educational-content.html" class="btn secondary">Explore Content</a>
+            </div>
+            <!-- <div class="action-card">
+                <h2>Overall Reports</h2>
+                <p>View your overall performance and track your progress over time.</p>
+                <a href="overall-reports.html" class="btn secondary">View Reports</a>
+            </div> -->
+        </section>
+    </main>
+    
+    <section class="header-courses">
+        <h2>Your Courses</h2>
+        <p>Select a course to view its educational materials and tests.</p>
+    </section>
+
+    <section class="courses-section">
+        <!-- Course 1 -->
+        <div class="course-item">
+            <h3>TOEFL Reading Basics</h3>
+            <p>Learn the basics of TOEFL reading and practice with relevant tests.</p>
+            <div class="course-content">
+                <h4>Educational Materials:</h4>
+                <ul>
+                    <li>
+                        <span>Introduction to TOEFL Reading</span>
+                        <a href="tip.html" class="btn primary">View Content</a>
+                    </li>
+                    <li>
+                        <span>Basic Vocabulary</span>
+                        <a href="tip.html" class="btn primary">View Content</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="course-tests">
+                <h4>Tests:</h4>
+                <ul>
+                    <li>
+                        <span>Basic Vocabulary Test</span>
+                        <a href="practice-mode.html" class="btn secondary">Take Test</a>
+                    </li>
+                    <li>
+                        <span>Reading Comprehension Test</span>
+                        <a href="practice-mode.html" class="btn secondary">Take Test</a>
+                    </li>
+                </ul>
+            </div>
+            <button class="btn remove" onclick="removeCourse(this)">Remove</button>
+        </div>
+    
+        <!-- Course 2 -->
+        <div class="course-item">
+            <h3>Critical Reading Skills</h3>
+            <p>Enhance your reading skills and develop advanced strategies for comprehension.</p>
+            <div class="course-content">
+                <h4>Educational Materials:</h4>
+                <ul>
+                    <li>
+                        <span>Understanding Complex Passages</span>
+                        <a href="tip.html" class="btn primary">View Content</a>
+                    </li>
+                    <li>
+                        <span>Text Structure Analysis</span>
+                        <a href="tip.html" class="btn primary">View Content</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="course-tests">
+                <h4>Tests:</h4>
+                <ul>
+                    <li>
+                        <span>Critical Thinking Test</span>
+                        <a href="test.html" class="btn secondary">Take Test</a>
+                    </li>
+                    <li>
+                        <span>Reading Speed Test</span>
+                        <a href="test.html" class="btn secondary">Take Test</a>
+                    </li>
+                </ul>
+            </div>
+            <button class="btn remove" onclick="removeCourse(this)">Remove</button>
+        </div>
+    </section>
+    
+    <script>
+        function removeCourse(button) {
+            const courseItem = button.closest('.course-item');
+            courseItem.remove();
+        }
+    </script>
+    
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 ReadingApp. All rights reserved.</p>
+    </footer>
+</body>
+</html>
