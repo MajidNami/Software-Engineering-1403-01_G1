@@ -7,13 +7,12 @@
     <title>صفحه خانه</title>
     <link rel="stylesheet" href="{% static 'base/home_style.css' %}">
     <style>
-        /* Styles for the pop-up */
         .popup {
             position: fixed;
             bottom: 0;
             left: 0;
-            width: 100%; /* Full width */
-            max-height: 30%; /* Adjusted height */
+            width: 100%;
+            max-height: 30%;
             overflow-y: auto;
             padding: 10px;
             background: #fff;
@@ -23,12 +22,6 @@
             border-radius: 10px 10px 0 0;
             font-family: Arial, sans-serif;
             resize: vertical;
-            overflow: auto; /* Allow scroll for content */
-        }
-
-        .popup h2 {
-            font-size: 16px;
-            margin: 0;
         }
 
         .popup .close {
@@ -41,7 +34,7 @@
 
         .popup .search-container {
             display: flex;
-            align-items: center;
+            justify-content: center;
             margin-bottom: 10px;
         }
 
@@ -56,10 +49,8 @@
         .popup .search-container button {
             padding: 5px;
             font-size: 14px;
-            background: #007bff;
-            color: white;
+            background: transparent;
             border: none;
-            border-radius: 0 5px 5px 0;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -67,12 +58,8 @@
         }
 
         .popup .search-container button img {
-            width: 20px;
-            height: 20px;
-        }
-
-        .popup .search-container button:hover {
-            background: #0056b3;
+            width: 25px;
+            height: 25px;
         }
 
         .popup-content {
@@ -88,13 +75,11 @@
             margin-bottom: 5px;
         }
 
-        /* Divider */
         .divider {
             border-top: 2px solid purple;
             margin: 10px 0;
         }
 
-        /* Voice Icon */
         .voice-icon {
             display: inline-block;
             width: 32px;
@@ -108,14 +93,12 @@
             height: 32px;
         }
 
-        /* Highlight background for meanings */
         .meanings {
-            background-color: #fff9c4; /* Light yellow */
+            background-color: #fff9c4;
             padding: 10px;
             border-radius: 5px;
         }
 
-        /* Loading indicator */
         .loading {
             display: none;
             position: fixed;
@@ -128,14 +111,8 @@
         .loading img {
             display: block;
             margin: 0 auto;
-            width: 300px; /* 4x size */
-            height: 300px; /* 4x size */
-        }
-
-        /* Blurred background when loading */
-        .blurred {
-            filter: blur(5px);
-            pointer-events: none;
+            width: 300px;
+            height: 300px;
         }
     </style>
 </head>
@@ -144,26 +121,20 @@
         <h1>خوش آمدید به گروه {{ group_number }}
             میکروسرویس خود را اینجا توسعه دهید
         </h1>
-        <p id="content">This is a passage for testing:
-        The curious fox wandered cautiously through the dense forest, its sleek fur glinting under the pale moonlight. Every rustle of the leaves and every distant howl heightened its vigilance. The fox’s quest was for a small stream, a source of refreshment in the otherwise parched wilderness. Along the way, it stumbled upon an abandoned cottage, its rickety door creaking in the cold night breeze. Intrigued but wary, the fox peeked inside, only to find a trove of dusty artifacts scattered across the floor—remnants of a time long past.</p>
+        <p id="content">This is a passage for testing: The curious fox wandered cautiously through the dense forest...</p>
     </div>
 
-    <!-- Loading Indicator -->
     <div class="loading" id="loading">
         <img src="https://i.gifer.com/YCZH.gif" alt="Loading">
     </div>
 
-    <!-- Pop-up Window -->
     <div class="popup" id="popup" style="display: none;">
         <span class="close" id="closePopup">&times;</span>
-        <div style="background-color: darkgreen; padding: 10px; border-radius: 5px;">
-            <h2>Word Details</h2>
-            <div class="search-container">
-                <input type="text" id="searchBox" placeholder="Enter a word to search">
-                <button id="searchButton">
-                    <img src="https://img.icons8.com/ios-filled/50/000000/search--v1.png" alt="Search">
-                </button>
-            </div>
+        <div class="search-container">
+            <input type="text" id="searchBox" placeholder="Enter a word to search">
+            <button id="searchButton">
+                <img src="https://img.icons8.com/color/48/000000/search--v1.png" alt="Search">
+            </button>
         </div>
         <div class="divider"></div>
         <div class="popup-content" id="popupContent">
@@ -208,10 +179,10 @@
             if (data.us_phonetic || data.uk_phonetic) {
                 content += '<p><strong>Phonetics:</strong></p><ul>';
                 if (data.us_phonetic) {
-                    content += `<li>US: ${data.us_phonetic.text} <span class="voice-icon"><img src="https://img.icons8.com/ios-filled/50/000000/speaker.png" alt="Play" onclick="playAudio('${data.us_phonetic.audio_url}')"></span></li>`;
+                    content += `<li>US: ${data.us_phonetic.text} <span class="voice-icon"><img src="https://img.icons8.com/color/48/000000/speaker.png" alt="Play" onclick="playAudio('${data.us_phonetic.audio_url}')"></span></li>`;
                 }
                 if (data.uk_phonetic) {
-                    content += `<li><span style="border: 2px solid red; padding: 2px;">UK: ${data.uk_phonetic.text} </span><span class="voice-icon"><img src="https://img.icons8.com/ios-filled/50/000000/speaker.png" alt="Play" onclick="playAudio('${data.uk_phonetic.audio_url}')"></span></li>`;
+                    content += `<li>UK: ${data.uk_phonetic.text} <span class="voice-icon"><img src="https://img.icons8.com/color/48/000000/speaker.png" alt="Play" onclick="playAudio('${data.uk_phonetic.audio_url}')"></span></li>`;
                 }
                 content += '</ul><div class="divider"></div>';
             }
@@ -231,12 +202,13 @@
                 });
                 content += '</ul></div><div class="divider"></div>';
             }
-            // synonyms and antonyms:
+
             if (data.synonyms && data.synonyms.length > 0) {
                 content += '<div class="meanings"><p><strong>Synonyms:</strong></p><p>';
                 content += data.synonyms.join(', ');
                 content += '</p></div><div class="divider"></div>';
             }
+
             if (data.antonyms && data.antonyms.length > 0) {
                 content += '<div class="meanings"><p><strong>Antonyms:</strong></p><p>';
                 content += data.antonyms.join(', ');
@@ -261,10 +233,6 @@
             document.getElementById('mainContent').classList.remove('blurred');
         }
 
-        document.getElementById('closePopup').addEventListener('click', function () {
-            document.getElementById('popup').style.display = 'none';
-        });
-
         document.getElementById('searchButton').addEventListener('click', function () {
             const searchWord = document.getElementById('searchBox').value.trim();
             if (searchWord) {
@@ -282,6 +250,6 @@
                 }
             }
         });
-        </script>
-    </body>
+    </script>
+</body>
 </html>
