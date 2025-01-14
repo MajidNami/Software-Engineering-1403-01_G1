@@ -1,7 +1,36 @@
 body {
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: "Roboto", Arial, sans-serif;
     margin: 0;
     padding: 0;
+}
+
+body.light-mode {
+    background-color: #f9f9f9;
+    color: #000;
+}
+
+body.dark-mode {
+    background-color: #121212;
+    color: #fff;
+}
+
+.theme-toggle-button {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    padding: 10px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1100;
+    font-family: "Roboto", Arial, sans-serif;
+    font-size: 14px;
+}
+
+.theme-toggle-button:hover {
+    background: #45a049;
 }
 
 .welcome-container {
@@ -9,6 +38,7 @@ body {
     padding: 20px;
     background: linear-gradient(135deg, #4caf50, #81c784);
     color: white;
+    font-family: "Poppins", Arial, sans-serif;
 }
 
 .popup {
@@ -17,7 +47,7 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    max-height: 33%; /* Reduced height to 0.8x */
+    max-height: 33%;
     overflow-y: auto;
     padding: 10px;
     background: white;
@@ -25,6 +55,7 @@ body {
     z-index: 1000;
     border-top: 5px solid #4caf50;
     border-radius: 15px 15px 0 0;
+    font-family: "Roboto", Arial, sans-serif;
 }
 
 .popup .search-container {
@@ -97,16 +128,17 @@ body {
 
 .popup-content .left-content p,
 .popup-content .left-content ul {
-    margin-bottom: 5px; /* Reduced spacing */
+    margin-bottom: 5px;
 }
 
 .divider {
-    margin: 8px 0; /* Reduced spacing */
+    margin: 8px 0;
     border-top: 2px dashed #4caf50;
 }
 
 .voice-icon {
     display: inline-block;
+    vertical-align: middle;
     width: 24px;
     height: 24px;
     cursor: pointer;
@@ -123,10 +155,9 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 4000;
+    z-index: 8000;
     text-align: center;
-    color: rgb(10, 121, 13);
-    font-size: 64px;
+    font-size: 128px;
     font-weight: bold;
 }
 
@@ -138,4 +169,97 @@ body {
 .blurred {
     filter: blur(5px);
     pointer-events: none;
+}
+
+.dark-mode .welcome-container {
+    background: linear-gradient(135deg, #212121, #484848);
+    color: #fff;
+}
+
+.dark-mode .popup {
+    background: #2e2e2e;
+    color: #fff;
+}
+
+.dark-mode .popup .left-content {
+    background: #383838;
+}
+
+.dark-mode .popup .right-content {
+    background: #484848;
+}
+
+.dark-mode .popup-content p,
+.dark-mode .popup-content ul {
+    color: #d4d4d4;
+}
+
+.dark-mode .loading img {
+    filter: brightness(1.5) invert(1);
+}
+
+.welcome-container h1,
+.welcome-container p {
+    color: #333;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+.dark-mode .welcome-container h1,
+.dark-mode .welcome-container p {
+    color: #e0e0e0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+.dark-mode .theme-toggle-button {
+    background: #000;
+    color: #fff;
+    border: 1px solid #fff;
+    box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2);
+}
+
+.dark-mode .theme-toggle-button:hover {
+    background: #333;
+    color: #fff;
+    border-color: #ccc;
+}
+
+.light-mode .loading {
+    color: rgb(10, 121, 13);
+}
+
+.dark-mode .loading {
+    color: #e0e0e0;
+}
+
+.popup .example-label {
+    color: green;
+    margin-left: 20px;
+}
+
+.dark-mode .popup .example-term {
+    background-color: rgb(73, 73, 8);
+    letter-spacing: 0.108em;
+    font-weight: 600;
+}
+
+.light-mode .popup .example-term {
+    background-color: rgb(255, 255, 136);
+    letter-spacing: 0.108em;
+    font-weight: 600;
+}
+
+.popup .header {
+    font-family: "Poppins",
+        Arial,
+        sans-serif;
+}
+
+.light-mode .popup .example-content {
+    color: #474747;
+}
+
+.dark-mode .popup .example-content {
+    color: #b9b9b9;
 }

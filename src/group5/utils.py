@@ -44,8 +44,8 @@ class Phonetic:
 
 
 class Word:
-    SYNONYMS_LIMIT = 3
-    ANTONYMS_LIMIT = 3
+    SYNONYMS_LIMIT = 5
+    ANTONYMS_LIMIT = 5
 
     def __init__(self, term):
         self.term = term

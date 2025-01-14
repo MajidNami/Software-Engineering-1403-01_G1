@@ -6,13 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>صفحه خانه</title>
     <link rel="stylesheet" href="{% static 'base/home_style.css' %}">
-    <link rel="stylesheet" href="../static/base/popup_style.css">
-    
+    <link rel="stylesheet" href="{% static 'base/popup_style.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="light-mode">
+    <button class="theme-toggle-button" id="themeToggle">Switch to Dark Mode</button>
     <div class="welcome-container" id="mainContent">
         <h1>خوش آمدید به گروه {{ group_number }}</h1>
-        <p>میکروسرویس خود را اینجا توسعه دهید</p>
+        <h2>Double-click a word below to search it in dictionary:</h2>
         <p id="content">The curious fox wandered cautiously through the dense forest, its sleek fur glinting under the pale moonlight.</p>
     </div>
 
@@ -23,17 +25,16 @@
 
     <div class="popup" id="popup">
         <div class="search-container">
-            <input type="text" id="searchBox" placeholder="Enter a word to search">
+            <input type="text" id="searchBox" placeholder="Enter a word to search" onkeypress="if(event.key === 'Enter') handleSearchClick()">
             <button id="searchButton">
                 <img src="../static/images/search.png" alt="Search">
             </button>
         </div>
         <div class="popup-content">
             <div class="left-content">
-                <p><strong>Term:</strong> <span id="term"></span></p>
-                <p><strong>Meanings:</strong></p>
+                <p class="header"><strong>Term:</strong> <span id="term"></span></p>
+                <p class="header"><strong>Meanings:</strong></p>
                 <ul id="meaningsList">No meanings available</ul>
-                
             </div>
             <div class="right-content">
                 <p><strong>Phonetics:</strong></p>
@@ -47,24 +48,48 @@
     </div>
 
     <script>
+        document.getElementById('themeToggle').addEventListener('click', function () {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
+            const isDarkMode = body.classList.contains('dark-mode');
+            this.textContent = isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+        });
+
         document.getElementById('content').addEventListener('dblclick', async function () {
             const selection = window.getSelection();
             const word = selection.toString().trim();
 
             if (word) {
                 showLoading();
+                const timeoutId = setTimeout(() => {
+                    hideLoading();
+                    alert('Request timed out. Please try again.');
+                }, 5000); // 5 seconds timeout
+
                 await fetchAndDisplayWord(word);
+                clearTimeout(timeoutId);
                 hideLoading();
             }
         });
+        document.addEventListener('click', function (event) {
+            const popup = document.getElementById('popup');
+            const isClickInsidePopup = popup.contains(event.target);
+            const isClickInsideSearchButton = document.getElementById('searchButton').contains(event.target);
+
+            if (!isClickInsidePopup && !isClickInsideSearchButton) {
+                popup.style.display = 'none';
+            }
+        });
+
 
         async function fetchAndDisplayWord(word) {
             try {
+                document.getElementById('searchBox').value = '';
                 const response = await fetch(`./dictionary/${word}`);
                 if (response.ok) {
                     const data = await response.json();
-                    console.log(data)
-                    document.getElementById('term').innerHTML = `<span style="color: red;">${data.term || "N/A"}</span>`;
+                    document.getElementById('term').textContent = data.term || "N/A";
                     formatWordDetails(data);
                     document.getElementById('popup').style.display = 'block';
                 } else {
@@ -77,33 +102,55 @@
             }
         }
 
+        function playUtterance(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            speechSynthesis.speak(utterance);
+        }
+
         function formatWordDetails(data) {
             if (data.us_phonetic || data.uk_phonetic) {
                 document.getElementById('phoneticsList').innerHTML = `
                     ${data.us_phonetic ? `<li>US: ${data.us_phonetic.text} 
-                        <span class="voice-icon" style="vertical-align: middle;">
+                        <span class="voice-icon">
                             <img src="../static/images/speaker.png" onclick="playAudio('${data.us_phonetic.audio_url}')">
                         </span>
                     </li>` : ''}
                     ${data.uk_phonetic ? `<li>UK: ${data.uk_phonetic.text} 
-                        <span class="voice-icon" style="vertical-align: middle;">
+                        <span class="voice-icon">
                             <img src="../static/images/speaker.png" onclick="playAudio('${data.uk_phonetic.audio_url}')">
                         </span>
                     </li>` : ''}
                 `;
             } else {
-                document.getElementById('phoneticsList').innerHTML = '<li>Phonetics not available</li>';
+                if ('speechSynthesis' in window) {
+                    document.getElementById('phoneticsList').innerHTML = `
+                        <li>
+                            TTS: <span class="voice-icon">
+                                <img src="../static/images/speaker.png" onclick="playUtterance('${data.term}')">
+                            </span>
+                        </li>
+                    `;
+                } else {
+                    document.getElementById('phoneticsList').innerHTML = '<li>Phonetics not available</li>';
+                }
             }
 
+            
+
+            
             document.getElementById('meaningsList').innerHTML = data.meanings
                 ? data.meanings.map(meaning => `
                     <li>
-                        <span style="color: blue;">${meaning.partOfSpeech}:</span>
+                        <span style="color: blue;"><strong>${meaning.partOfSpeech}:</strong></span>
                         <ul>
                             ${meaning.definitions.map(def => `
                                 <li>
                                     ${def.definition}
-                                    ${def.example ? `<br><em style="color: green;">Example:</em> ${def.example.replace(new RegExp(data.term, 'gi'), match => `<span style="background-color: yellow;">${match}</span>`)}` : ''}
+                                    ${def.example ? `<br><em class="example-label">Example:</em> 
+                                    <span class="voice-icon">
+                                        <img src="../static/images/speaker.png" onclick="playUtterance('${def.example}')">
+                                    </span> <span class="example-content">${def.example.replace(new RegExp(data.term, 'gi'), match => `<span class="example-term">${match}</span>`)}</span>` : ''}
                                 </li>
                             `).join('')}
                         </ul>
@@ -132,12 +179,16 @@
             document.getElementById('mainContent').classList.remove('blurred');
         }
 
-        document.getElementById('searchButton').addEventListener('click', function () {
+        function handleSearchClick() {
             const searchWord = document.getElementById('searchBox').value.trim();
             if (searchWord) {
                 showLoading();
                 fetchAndDisplayWord(searchWord).then(hideLoading);
             }
+        }
+
+        document.getElementById('searchButton').addEventListener('click', function () {
+            handleSearchClick();
         });
     </script>
 </body>
