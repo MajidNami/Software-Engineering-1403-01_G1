@@ -36,7 +36,10 @@ class DictionaryAPI:
 
     def __set_definitions(self, meaning: Meaning, definitions: list):
         for definition in definitions:
-            definition_obj = Definition(definition[3])
+            if (definition[4] != None): # If there is an example
+                definition_obj = Definition(definition[3], definition[4])
+            else:
+                definition_obj = Definition(definition[3])
             meaning.addDefinition(definition_obj)
 
     def __set_meanings(self, word: Word, meanings: list):
@@ -45,7 +48,7 @@ class DictionaryAPI:
             pos = entry[2]
             if pos in POS_ABBREVIATIONS.keys():
                 pos = POS_ABBREVIATIONS[pos]
-                
+
             if pos not in pos_dict:
                 pos_dict[pos] = []
             pos_dict[pos].append(entry)
