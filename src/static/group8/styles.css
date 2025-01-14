@@ -1,0 +1,298 @@
+/* General Styling */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background: linear-gradient(135deg, #ff8c00, #1e90ff, #ff69b4);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+header {
+    background-color: #ff8c00;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    text-align: center;
+}
+
+#sound-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Layout */
+#main-content {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex-basis: 25%;
+    margin-right: 0;
+}
+
+.corner-section {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-right: 2px solid rgba(255, 255, 255, 0.5);
+    padding: 15px;
+    box-shadow: 4px 0px 6px rgba(0, 0, 0, 0.1);
+}
+
+#add-word,
+#progress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+}
+
+#add-word button,
+#progress button {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff8c00, #1e90ff);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#add-word button:hover,
+#progress button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, #1e90ff, #ff69b4);
+}
+
+/* Center Column */
+.centered-section {
+    flex-basis: 75%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-left: 0;
+    height: 100%;
+}
+
+#word-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+#word-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff;
+}
+
+#pagination-controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Forms and Search */
+#search-container,
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#search-bar {
+    padding: 8px;
+    border: 2px solid #1e90ff;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+}
+
+select {
+    padding: 8px;
+    border: 2px solid #ff8c00;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+}
+
+button#start-btn {
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+button#start-btn:hover {
+    transform: scale(1.05);
+    background-color: #1e90ff;
+}
+
+/* Add Word Form Page Styling */
+#add-word-form-container {
+    background-color: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    margin: 120px auto;
+    text-align: center;
+    color: #ffffff;
+}
+
+#add-word-form-container h2 {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+}
+
+.form-group input[type="file"] {
+    padding: 0;
+}
+
+button#add-word-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff512f;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    border: 2px solid transparent;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+button#add-word-btn:hover {
+    transform: scale(1.05);
+    background-color: #f09819;
+    border-color: #ff512f;
+}
+
+option {
+    color: #000000;
+    background-color: #ffffff;
+}
+
+/* Word Item Styling */
+.word-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.word-image {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.button-container button {
+    background-color: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.button-container button:hover {
+    background-color: #ffffff;
+    color: #000000;
+}
