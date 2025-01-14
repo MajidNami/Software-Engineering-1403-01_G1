@@ -4,6 +4,8 @@ from .secret import THESARUS_API_KEY
 from database.secret import *
 from .database.query import *
 from .abbreviations import POS_ABBREVIATIONS
+import concurrent.futures
+
 
 
 class DictionaryAPI:
@@ -77,12 +79,20 @@ class DictionaryAPI:
 
     def fetch_word(self, term: str) -> Word:
         term = term.lower()
-        db_response = fetch_word_db(self.DB_CONNECTION, term)
-        phon_response = requests.get(self.PHON_API_URL.format(term))
-        thesarus_response = requests.get(
-            self.THESARUS_API_URL.format(term),
-            headers={"X-Api-Key": THESARUS_API_KEY},
-        )
+
+        # Fetch data from APIs concurrently 
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            db_future = executor.submit(fetch_word_db, self.DB_CONNECTION, term)
+            phon_future = executor.submit(requests.get, self.PHON_API_URL.format(term))
+            thesarus_future = executor.submit(
+                requests.get,
+                self.THESARUS_API_URL.format(term),
+                headers={"X-Api-Key": THESARUS_API_KEY},
+            )
+
+            db_response = db_future.result()
+            phon_response = phon_future.result()
+            thesarus_response = thesarus_future.result()
 
         if phon_response.status_code != 200:
             return None

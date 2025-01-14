@@ -96,7 +96,19 @@
             }
 
             document.getElementById('meaningsList').innerHTML = data.meanings
-                ? data.meanings.map(meaning => `<li><span style="color: blue;">${meaning.partOfSpeech}:</span> ${meaning.definitions[0].definition}</li>`).join('')
+                ? data.meanings.map(meaning => `
+                    <li>
+                        <span style="color: blue;">${meaning.partOfSpeech}:</span>
+                        <ul>
+                            ${meaning.definitions.map(def => `
+                                <li>
+                                    ${def.definition}
+                                    ${def.example ? `<br><em style="color: green;">Example:</em> ${def.example.replace(new RegExp(data.term, 'gi'), match => `<span style="background-color: yellow;">${match}</span>`)}` : ''}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </li>
+                `).join('')
                 : '<li>No meanings available</li>';
 
             document.getElementById('synonymsList').textContent = data.synonyms?.join(', ') || 'No synonyms available';
