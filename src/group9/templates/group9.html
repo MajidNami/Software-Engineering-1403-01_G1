@@ -9,9 +9,11 @@
 </head>
 <body>
     <div class="welcome-container">
-      <h1>خوش آمدید به گروه {{ group_number }}
-            میکروسرویس خود را اینجا توسعه دهید
-        </h1>
+        <h1>Welcome to the Writing Service</h1>
+        <ul>
+            <li><a href="{% url 'group9:Signup' %}">Signup</a></li>
+            <li><a href="{% url 'group9:login' %}">Login</a></li>
+        </ul>
     </div>
 </body>
 </html>

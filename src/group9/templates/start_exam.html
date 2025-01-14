@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Start Exam</title>
+</head>
+<body>
+  <h1>Start Exam</h1>
+  <form method="POST">
+    {% csrf_token %}
+    
+    {% for q in questions %}
+        <!-- q[0] = question ID, q[1] = question body, q[2] = (correct) answer -->
+        
+        <!-- 1) Hidden input storing the question ID -->
+        <input type="hidden" name="question_ids" value="{{ q.0 }}">
+        
+        <!-- 2) Display question body -->
+        <p>{{ q.1 }}</p>
+        
+        <!-- 3) Field for user to input their answer (open-ended) -->
+        <label for="answer_{{ q.0 }}">Your answer:</label>
+        <input 
+            type="text" 
+            name="answer_{{ q.0 }}" 
+            id="answer_{{ q.0 }}" 
+            placeholder="Type your answer here"
+        >
+        <br><br>
+    {% endfor %}
+    
+    <!-- 4) Submission button -->
+    <button type="submit">Submit Exam</button>
+</form>
+</body>
+</html>
