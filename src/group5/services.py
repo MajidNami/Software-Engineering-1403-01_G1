@@ -1,11 +1,14 @@
 import requests
 from .utils import *
 from .secret import THESARUS_API_KEY
+from database.secret import *
+from .database.query import *
 
 
 class DictionaryAPI:
-    DICT_API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/{}"
+    PHON_API_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/{}"
     THESARUS_API_URL = "https://api.api-ninjas.com/v1/thesaurus?word={}"
+    DB_CONNECTION = create_db_connection(DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
 
     instance = None
 
@@ -32,29 +35,30 @@ class DictionaryAPI:
 
     def __set_definitions(self, meaning: Meaning, definitions: list):
         for definition in definitions:
-            if ('example' not in definition):
-                definition_obj = Definition(definition['definition'])
-            else :
-                definition_obj = Definition(definition['definition'], definition['example'])
+            definition_obj = Definition(definition[3])
             meaning.addDefinition(definition_obj)
 
     def __set_meanings(self, word: Word, meanings: list):
-        for meaning in meanings:
-            meaning_obj = Meaning(meaning['partOfSpeech'])
-
-            if 'definitions' in meaning:
-                self.__set_definitions(meaning_obj, meaning['definitions'])
-
+        pos_dict = {}
+        for entry in meanings:
+            pos = entry[2]
+            if pos not in pos_dict:
+                pos_dict[pos] = []
+            pos_dict[pos].append(entry)
+            
+        for pos in pos_dict.keys():
+            meaning_obj = Meaning(pos)
+            self.__set_definitions(meaning_obj, pos_dict[pos])
             word.addMeaning(meaning_obj)
 
-    def __make_word(self, dict_data: dict, thesarus_data: dict) -> Word:
-        word = Word(dict_data['word'])
+    def __make_word(self, phon_data: dict, thesarus_data: dict, db_response: list) -> Word:
+        word = Word(phon_data['word'])
 
-        if 'phonetics' in dict_data:
-            self.__set_phoentics(word, dict_data['phonetics'])
+        if 'phonetics' in phon_data:
+            self.__set_phoentics(word, phon_data['phonetics'])
 
-        if 'meanings' in dict_data:
-            self.__set_meanings(word, dict_data['meanings'])
+        if len(db_response) != 0:
+            self.__set_meanings(word, db_response)
 
         if 'synonyms' in thesarus_data:
             word.synonyms = [synonym for synonym in thesarus_data['synonyms'] if synonym.strip() != ""]
@@ -66,16 +70,17 @@ class DictionaryAPI:
 
     def fetch_word(self, term: str) -> Word:
         term = term.lower()
-        dict_respone = requests.get(self.DICT_API_URL.format(term))
+        db_response = fetch_word_db(self.DB_CONNECTION, term)
+        phon_response = requests.get(self.PHON_API_URL.format(term))
         thesarus_response = requests.get(
             self.THESARUS_API_URL.format(term),
             headers={"X-Api-Key": THESARUS_API_KEY},
         )
 
-        if dict_respone.status_code != 200:
+        if phon_response.status_code != 200:
             return None
 
-        return self.__make_word(dict_respone.json()[0], thesarus_response.json())
+        return self.__make_word(phon_response.json()[0], thesarus_response.json(), db_response)
 
 
 if __name__ == "__main__":
