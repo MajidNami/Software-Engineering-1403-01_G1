@@ -3,6 +3,7 @@ from .utils import *
 from .secret import THESARUS_API_KEY
 from database.secret import *
 from .database.query import *
+from .abbreviations import POS_ABBREVIATIONS
 
 
 class DictionaryAPI:
@@ -42,6 +43,9 @@ class DictionaryAPI:
         pos_dict = {}
         for entry in meanings:
             pos = entry[2]
+            if pos in POS_ABBREVIATIONS.keys():
+                pos = POS_ABBREVIATIONS[pos]
+                
             if pos not in pos_dict:
                 pos_dict[pos] = []
             pos_dict[pos].append(entry)
