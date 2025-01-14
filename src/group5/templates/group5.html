@@ -7,9 +7,124 @@
     <title>صفحه خانه</title>
     <link rel="stylesheet" href="{% static 'base/home_style.css' %}">
     <link rel="stylesheet" href="../static/base/popup_style.css">
-    
+    <style>
+        body.light-mode {
+            background-color: #f9f9f9;
+            color: #000;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #fff;
+        }
+
+        .dark-mode .welcome-container {
+            background: linear-gradient(135deg, #212121, #484848);
+            color: #fff;
+        }
+
+        .dark-mode .popup {
+            background: #2e2e2e;
+            color: #fff;
+        }
+
+        .dark-mode .popup .left-content {
+            background: #383838;
+        }
+
+        .dark-mode .popup .right-content {
+            background: #484848;
+        }
+
+        .dark-mode .popup-content p,
+        .dark-mode .popup-content ul {
+            color: #d4d4d4;
+        }
+
+        .dark-mode .loading img {
+            filter: brightness(1.5);
+        }
+
+        .welcome-container h1, .welcome-container p {
+            color: #333;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.7);
+        }
+
+        .dark-mode .welcome-container h1,
+        .dark-mode .welcome-container p {
+            color: #e0e0e0;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+        }
+
+        .theme-toggle-button {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            padding: 10px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1100;
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .theme-toggle-button:hover {
+            background: #45a049;
+        }
+
+        .dark-mode .theme-toggle-button {
+            background: #000;
+            color: #fff;
+            border: 1px solid #fff;
+            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.2);
+        }
+
+        .dark-mode .theme-toggle-button:hover {
+            background: #333;
+            color: #fff;
+            border-color: #ccc;
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 8000;
+            text-align: center;
+            font-size: 128px;
+            font-weight: bold;
+        }
+
+        .light-mode .loading {
+            color: rgb(10, 121, 13);
+        }
+
+        .dark-mode .loading {
+            color: #e0e0e0;
+        }
+
+        .loading img {
+            width: 300px;
+            height: 300px;
+        }
+
+        .dark-mode .loading img {
+            filter: brightness(1.5) invert(1);
+        }
+
+        .blurred {
+            filter: blur(5px);
+            pointer-events: none;
+        }
+    </style>
 </head>
-<body>
+<body class="light-mode">
+    <button class="theme-toggle-button" id="themeToggle">Switch to Dark Mode</button>
     <div class="welcome-container" id="mainContent">
         <h1>خوش آمدید به گروه {{ group_number }}</h1>
         <p>میکروسرویس خود را اینجا توسعه دهید</p>
@@ -33,7 +148,6 @@
                 <p><strong>Term:</strong> <span id="term"></span></p>
                 <p><strong>Meanings:</strong></p>
                 <ul id="meaningsList">No meanings available</ul>
-                
             </div>
             <div class="right-content">
                 <p><strong>Phonetics:</strong></p>
@@ -47,6 +161,14 @@
     </div>
 
     <script>
+        document.getElementById('themeToggle').addEventListener('click', function () {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
+            const isDarkMode = body.classList.contains('dark-mode');
+            this.textContent = isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+        });
+
         document.getElementById('content').addEventListener('dblclick', async function () {
             const selection = window.getSelection();
             const word = selection.toString().trim();
@@ -63,8 +185,7 @@
                 const response = await fetch(`./dictionary/${word}`);
                 if (response.ok) {
                     const data = await response.json();
-                    console.log(data)
-                    document.getElementById('term').innerHTML = `<span style="color: red;">${data.term || "N/A"}</span>`;
+                    document.getElementById('term').textContent = data.term || "N/A";
                     formatWordDetails(data);
                     document.getElementById('popup').style.display = 'block';
                 } else {
@@ -78,25 +199,12 @@
         }
 
         function formatWordDetails(data) {
-            if (data.us_phonetic || data.uk_phonetic) {
-                document.getElementById('phoneticsList').innerHTML = `
-                    ${data.us_phonetic ? `<li>US: ${data.us_phonetic.text} 
-                        <span class="voice-icon" style="vertical-align: middle;">
-                            <img src="../static/images/speaker.png" onclick="playAudio('${data.us_phonetic.audio_url}')">
-                        </span>
-                    </li>` : ''}
-                    ${data.uk_phonetic ? `<li>UK: ${data.uk_phonetic.text} 
-                        <span class="voice-icon" style="vertical-align: middle;">
-                            <img src="../static/images/speaker.png" onclick="playAudio('${data.uk_phonetic.audio_url}')">
-                        </span>
-                    </li>` : ''}
-                `;
-            } else {
-                document.getElementById('phoneticsList').innerHTML = '<li>Phonetics not available</li>';
-            }
+            document.getElementById('phoneticsList').innerHTML = data.phonetics
+                ? data.phonetics.map(phonetic => `<li>${phonetic.text || ''} <span class="voice-icon"><img src="../static/images/speaker.png" onclick="playAudio('${phonetic.audio || ''}')"></span></li>`).join('')
+                : '<li>No phonetics available</li>';
 
             document.getElementById('meaningsList').innerHTML = data.meanings
-                ? data.meanings.map(meaning => `<li><span style="color: blue;">${meaning.partOfSpeech}:</span> ${meaning.definitions[0].definition}</li>`).join('')
+                ? data.meanings.map(meaning => `<li>${meaning.partOfSpeech}: ${meaning.definitions[0].definition}</li>`).join('')
                 : '<li>No meanings available</li>';
 
             document.getElementById('synonymsList').textContent = data.synonyms?.join(', ') || 'No synonyms available';
