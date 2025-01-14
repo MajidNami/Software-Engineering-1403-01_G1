@@ -108,7 +108,7 @@
 <body>
   <div class="questions-container">
     <h1>Answer the Questions</h1>
-    <form method="POST" action="">
+    <form method="POST" action="{% url 'group9:show_questions' %}">
       {% csrf_token %}
       
       {% for question in questions %}
