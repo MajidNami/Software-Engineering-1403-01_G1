@@ -117,7 +117,7 @@
 <body>
   <div class="login-container">
     <h1>Login</h1>
-    <form method="POST" action="">
+    <form method="POST" action="{% url 'group9:login' %}">
       {% csrf_token %}
 
       <!-- Username -->
