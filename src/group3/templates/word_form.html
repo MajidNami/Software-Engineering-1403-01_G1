@@ -1,0 +1,13 @@
+<!-- templates/group3/word_form.html -->
+
+{% extends "group3/base.html" %} {% block content %} {% if word %}
+<h2>✏️ Edit Word</h2>
+{% else %}
+<h2>✨ Add New Word</h2>
+{% endif %}
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <input type="submit" value="Save Word" />
+</form>
+<a href="{% url 'group3:word-list'%}"> Cancel </a>
+{% endblock %}

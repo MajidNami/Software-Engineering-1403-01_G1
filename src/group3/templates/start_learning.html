@@ -1,0 +1,8 @@
+<!-- templates/cards/box.html -->
+
+{% extends "group3/base.html" %} {% load humanize %} {% block content %}
+<h2>🗃 {{ box_number | ordinal }} Box</h2>
+<mark>{{ object_list | length }}</mark> Word{{ object_list | pluralize }} left
+in box.
+<hr />
+{% include "group3/word.html" %} {%endblock content %}\

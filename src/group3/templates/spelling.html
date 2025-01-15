@@ -1,0 +1,19 @@
+<!-- templates/cards/box.html -->
+
+{% extends "group3/base.html" %} {% load humanize %} {% block content %}
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Spelling Test</title>  
+</head>  
+<body>  
+    <h1>Spell the word</h1>  
+    <form method="post">  
+        {% csrf_token %}  
+        <input type="text" name="spelling" required>  
+        <button type="submit">Check Spelling</button>  
+    </form>  
+</body>  
+</html>
+{%endblock content %}\

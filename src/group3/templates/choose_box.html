@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Choose Box</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Tick-8 Box App</h1>
+      {% include "group3/navigation.html" %}
+    </header>
+    <main>
+        <h1>Select a Box (1-8)</h1>  
+        <form action="" method="post">  
+            {% csrf_token %}
+            <input type="number" name="box_number" min="1" max="8" required>
+            <button type="submit">Submit</button>
+        </form> 
+    </main>
+  </body>
+</html>
