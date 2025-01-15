@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - ReadingApp</title>
-    <link rel="stylesheet" href="{% static 'styles.css'%}">
+    <link rel="stylesheet" href="{%static 'styles.css'%}">
 </head>
 <body>
     <div class="signup-container">
@@ -54,7 +54,7 @@
 
             <button type="submit" class="btn primary">Sign Up</button>
 
-            <p>Already have an account? <a href="login.html">Login</a></p>
+            <p>Already have an account? <a href="{%url 'group4:g4login'%}">Login</a></p>
         </form>
     </div>
 </body>

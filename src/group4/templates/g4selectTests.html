@@ -1,0 +1,81 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Reading Test - ReadingApp</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">ReadingApp</div>
+            <ul class="nav-links">
+                <li><a href="{%url 'group4:g4redirectToDashboard'%}">Dashboard</a></li>
+                <li><a href="{%url 'group4:g4logout'%}" class="btn secondary">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="test-container">
+        <h1>Select a Reading Test</h1>
+        <p>Choose a test based on your level and preferred mode.</p>
+
+        <!-- Level A1 -->
+        <section class="test-level">
+            <h2>Beginner</h2>
+            <ul class="test-list">
+                {% for lvl1reading in lvl1 %}
+                <li class="test-item">
+                    <span>{{lvl1reading.title}}</span>
+                    <div class="test-buttons">
+                        <a href="{% url 'group4:g4practiceReading' lvl1reading.id%}" class="btn primary">Practice Mode</a>
+                        <a href="{% url 'group4:g4examReading' lvl1reading.id%}" class="btn secondary">Exam Mode</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Level A2 -->
+        <section class="test-level">
+            <h2>Intermediate</h2>
+            <ul class="test-list">
+                {% for lvl2reading in lvl2 %}
+                <li class="test-item">
+                    <span>{{lvl2reading.title}}</span>
+                    <div class="test-buttons">
+                        <a href="{% url 'group4:g4practiceReading' lvl2reading.id%}" class="btn primary">Practice Mode</a>
+                        <a href="{% url 'group4:g4examReading' lvl2reading.id%}" class="btn secondary">Exam Mode</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <!-- Level B1 -->
+        <section class="test-level">
+            <h2>Advanced</h2>
+            <ul class="test-list">
+                {% for lvl3reading in lvl3 %}
+                <li class="test-item">
+                    <span>{{lvl3reading.title}}</span>
+                    <div class="test-buttons">
+                        <a href="{% url 'group4:g4practiceReading' lvl3reading.id%}" class="btn primary">Practice Mode</a>
+                        <a href="{% url 'group4:g4examReading' lvl3reading.id%}" class="btn secondary">Exam Mode</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 ReadingApp. All rights reserved.</p>
+    </footer>
+</body>
+</html>

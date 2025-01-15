@@ -1,0 +1,77 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Content - ReadingApp</title>
+    <link rel="stylesheet" href="{%static 'styles.css'%}">
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">ReadingApp</div>
+            <ul class="nav-links">
+                <li><a href="{%url 'group4:g4redirectToDashboard'%}">Dashboard</a></li>
+                <li><a href="{%url 'group4:g4logout'%}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="content-container">
+        <section id="content">
+            <h1>Educational Content</h1>
+            <p>Explore articles, videos, and materials to enhance your reading skills.</p>
+            <div class="content-list">
+                <!-- Content Card 1 (Video) -->
+                {% for cont in contents %}
+                    <div class="content-card">
+                        <h2>{{cont.title}}</h2>
+                        <p>{{cont.description}}</p>
+                        <a href="{%url 'group4:g4tip' cont.id%}" class="btn primary">Read More</a>
+                    </div>
+                {%endfor%}
+                <!-- <div class="content-card">
+                    <h2>How to Improve Reading Speed</h2>
+                    <video controls>
+                        <source src="videos/reading-speed.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>Learn how to read faster while maintaining comprehension with expert tips.</p>
+                </div> -->
+
+                <!-- Content Card 2 (Text) -->
+                <!-- <div class="content-card">
+                    <h2>5 Tips for Better Reading Comprehension</h2>
+                    <p>Understanding what you read is as important as speed. Discover simple tips for improving comprehension.</p>
+                    <a href="tip.html" class="btn readmore">Read More</a>
+                </div> -->
+
+                <!-- Content Card 3 (Video) -->
+                <!-- <div class="content-card">
+                    <h2>Essential TOEFL Reading Vocabulary</h2>
+                    <video controls>
+                        <source src="videos/toefl-vocabulary.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p>Familiarize yourself with key vocabulary commonly used in TOEFL reading passages.</p>
+                </div> -->
+
+                <!-- Content Card 4 (Text) -->
+                <!-- <div class="content-card">
+                    <h2>Understanding Complex Sentences</h2>
+                    <p>Improve your ability to understand and analyze complex sentence structures.</p>
+                    <a href="tip.html" class="btn readmore">Read More</a>
+                </div> -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 ReadingApp. All rights reserved.</p>
+    </footer>
+</body>
+</html>

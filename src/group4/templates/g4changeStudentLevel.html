@@ -12,7 +12,7 @@
         <div class="navbar">
             <div class="logo">ReadingApp</div>
             <ul class="nav-links">
-                <li><a href="teacher-dashboard.html">Dashboard</a></li>
+                <li><a href="{%url 'group4:g4redirectToTeacherDashboard'%}">Dashboard</a></li>
                 <li><a href="{%url 'group4:g4logout'%}">Logout</a></li>
             </ul>
         </div>
@@ -42,9 +42,9 @@
                 <div class="form-group">
                     <label for="new-level">New Level</label>
                     <select id="new-level" name="new-level" required>
-                        <option value="beginner">Beginner</option>
-                        <option value="intermediate">Intermediate</option>
-                        <option value="advanced">Advanced</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
                     </select>
                 </div>
                 <div class="btn-container">
@@ -63,11 +63,11 @@
             const select = document.getElementById('new-level');
             const selectedValue = select.value;
 
-            if (selectedValue === 'Beginner') {
+            if (selectedValue === 'beginner') {
                 select.style.backgroundColor = '#ccffcc';
-            } else if (selectedValue === 'Intermediate') {
+            } else if (selectedValue === 'intermediate') {
                 select.style.backgroundColor = '#ffffcc';
-            } else if (selectedValue === 'Advanced') {
+            } else if (selectedValue === 'advanced') {
                 select.style.backgroundColor = '#ffcccc';
             }
         }

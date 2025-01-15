@@ -1,0 +1,153 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Test - Practice Mode</title>
+    <link rel="stylesheet" href="{%static 'styles.css'%}">
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">ReadingApp</div>
+            <ul class="nav-links">
+                <li><a href="{%url 'group4:g4redirectToDashboard'%}">Dashboard</a></li>
+                <li><a href="{%url 'group4:g4logout'%}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <section class="content-section">
+        <main class="reading-test-container">
+            <h1>Practice Mode: Reading Test</h1>
+            <p>This mode allows you to practice without a timer. Read the passage below and answer the questions that follow.</p>
+            <form action="{%url 'group4:g4saveResult'%}" method="post">
+            {%csrf_token%}
+            <!-- Passage Section -->
+            <section class="passage">
+                <h2>{{title}}</h2>
+                <p>
+                    {{content}}
+                </p>
+            </section>
+
+            <!-- Questions Section -->
+            <section class="questions">
+                <h2>Questions</h2>
+                <ul>
+                    <li>
+                        <p>{{q1body}}</p>
+                        <label>
+                            <input type="radio" name="q1" value="A"> A) {{q1cans}}
+                        </label><br>
+                        <label>
+                            <input type="radio" name="q1" value="B"> B) {{q1wans1}}
+                        </label><br>
+                        <label>
+                            <input type="radio" name="q1" value="C"> C) {{q1wans2}}
+                        </label><br>
+                        <label>
+                            <input type="radio" name="q1" value="D"> D) {{q1wans3}}
+                        </label><br>
+                    </li>
+                    <li>
+                        <p>{{q2body}}</p>
+                        <label>
+                            <input type="radio" name="q2" value="A"> A) {{q2wans2}}
+                        </label><br>
+                        <label>
+                            <input type="radio" name="q2" value="B"> B) {{q2cans}}
+                        </label><br>
+                        <label>
+                            <input type="radio" name="q2" value="C"> C) {{q2wans1}}
+                        </label><br>
+                        <label>
+                            <input type="radio" name="q2" value="D"> D) {{q2wans3}}
+                        </label><br>
+                    </li>
+                    <li>
+                        <p>{{q3body}}</p>
+                        <label>
+                            <input type="radio" name="q3" value="A"> A) {{q3wans1}}
+                        </label><br>
+                        <label>
+                            <input type="radio" name="q3" value="B"> B)  {{q3wans2}}
+                        </label><br>
+                        <label>
+                            <input type="radio" name="q3" value="C"> C)  {{q3wans3}}
+                        </label><br>
+                        <label>
+                            <input type="radio" name="q3" value="D"> D)  {{q3cans}}
+                        </label><br>
+                    </li>
+                </ul>
+            </section>
+
+                    <button type="submit" class="check-btn">Check Answers</button>
+                </form>
+        </main>
+
+        <!-- Dictionary Section -->
+        <aside class="dictionary">
+            <h2>Dictionary </h2>
+            <h3>(Click on word to get definition)</h3>
+            <label for="word">Enter a word to get the definition:</label>
+            <input type="text" id="word" name="word" placeholder="Type a word">
+            <button class="search-btn" onclick="searchWord()">Search</button>
+
+            <p id="word-result" class="word-result">salam</p>
+        </aside>
+    </section>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passage = document.querySelector('.passage');
+            const wordInput = document.getElementById('word');
+            const wordResult = document.getElementById('word-result');
+            const searchButton = document.querySelector('.search-btn');
+
+            passage.addEventListener('click', function(event) {
+                const word = getWordUnderMouse(event);
+                if (word) {
+                    wordInput.value = word;
+                    searchButton.click(); // Automatically click the search button
+                }
+            });
+
+            function getWordUnderMouse(event) {
+                const range = document.caretRangeFromPoint(event.clientX, event.clientY);
+                range.expand('word');
+                return range.toString().trim();
+            }
+
+            window.searchWord = function() {
+                const word = wordInput.value;
+                fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && data.length > 0 && data[0].meanings && data[0].meanings.length > 0) {
+                            const definition = data[0].meanings[0].definitions[0].definition;
+                            wordResult.textContent = `Definition of ${word}: ${definition}`;
+                        } else {
+                            wordResult.textContent = `No definition found for ${word}.`;
+                        }
+                    })
+                    .catch(error => {
+                        wordResult.textContent = `Error fetching definition for ${word}.`;
+                        console.error('Error:', error);
+                    });
+            };
+        });
+    </script>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 ReadingApp. All rights reserved.</p>
+    </footer>
+</body>
+</html>

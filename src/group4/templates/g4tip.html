@@ -1,0 +1,46 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Tips</title>
+    <link rel="stylesheet" href="{%static 'styles.css'%}">
+</head>
+<body>
+
+   <!-- Header / Navbar -->
+   <header>
+    <nav class="navbar">
+        <div class="logo">ReadingApp</div>
+        <ul class="nav-links">
+            <li><a href="{%url 'group4:g4redirectToDashboard'%}">Dashboard</a></li>
+            <li><a href="{%url 'group4:g4logout'%}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="tip-container">
+        <h1>{{content.title}}</h1>
+        <img src="data:image/JPG;base64,{{ content.file }}" alt="Reading Tips" class="tip-image">
+        <p class="author">{{content.username}}</p>
+        <div class="rounded-box">
+            {{content.description}}
+            <!-- <p>Reading comprehension is a crucial skill for academic success and personal growth. Here are five tips to help you improve your reading comprehension:</p>
+            <ol>
+                <li><strong>Preview the text:</strong> Before you start reading, take a few moments to skim the text. Look at headings, subheadings, and any highlighted or bolded words. This will give you an idea of the main topics and help you understand the structure of the text.</li>
+                <li><strong>Ask questions:</strong> As you read, ask yourself questions about the content. What is the main idea? What are the key details? How does this information relate to what you already know? Asking questions will keep you engaged and help you retain information.</li>
+                <li><strong>Summarize:</strong> After reading a section, take a moment to summarize what you have read in your own words. This will help reinforce your understanding and identify any areas where you may need to review.</li>
+                <li><strong>Take notes:</strong> Writing down important points, key details, and any questions you have can help you remember and understand the material better. Use bullet points, diagrams, or mind maps to organize your notes.</li>
+                <li><strong>Practice regularly:</strong> Like any skill, reading comprehension improves with practice. Set aside time each day to read a variety of texts, from news articles to novels. The more you read, the better you will become at understanding and analyzing different types of texts.</li>
+            </ol>
+            <p>By following these tips, you can enhance your reading comprehension skills and become a more effective reader.</p> -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 ReadingApp. All rights reserved.</p>
+    </footer>
+</body>
+</html>

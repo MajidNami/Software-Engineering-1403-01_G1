@@ -1,0 +1,82 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Test Results - ReadingApp</title>
+    <link rel="stylesheet" href="{%static 'styles.css'%}">
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header>
+        <nav class="navbar">
+            <div class="logo">ReadingApp</div>
+            <ul class="nav-links">
+                <li><a href="{%url 'group4:g4redirectToDashboard'%}">Dashboard</a></li>
+                <li><a href="{%url 'group4:g4logout'%}">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="results-container">
+        <h1>My Test Results</h1>
+        <p>Here are the tests you have taken so far. Click on "Details" for more information.</p>
+        
+        <!-- Last Result Section -->
+        <section class="lr-section">
+            <h1> - Last Result - </h1>
+            <h2>Score: <span id="score">{{last}}%</span></h2>
+        </section>
+
+        <!-- Summary Section -->
+        <section class="summary-section">
+            <h2>Summary</h2>
+            <p>Average Score: <span id="average-score">{{avg}}%</span></p>
+            <p>Recommended Level: <span id="recommended-level">{{rl}}</span></p>
+        </section>
+
+        <!-- Results Table -->
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Date</th>
+                    <th>Score</th>
+                    <!-- <th>Action</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sample Result Row -->
+                {% for test in related %}
+                    <tr>
+                        <td>{{test.title}}</td>
+                        <td>{{test.date}}</td>
+                        <td>{{test.score}}</td>
+                        <!-- <td><a href="test-detail.html" class="btn primary">Details</a></td> -->
+                    </tr>
+                {% endfor %}
+                
+                <!-- <tr>
+                    <td>Intermediate Comprehension</td>
+                    <td>2025-01-05</td>
+                    <td>72%</td>
+                    <td><a href="test-detail.html" class="btn primary">Details</a></td>
+                </tr>
+                <tr>
+                    <td>Reading Speed Practice</td>
+                    <td>2025-01-01</td>
+                    <td>91%</td>
+                    <td><a href="test-detail.html" class="btn primary">Details</a></td>
+                </tr> -->
+            </tbody>
+        </table>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 ReadingApp. All rights reserved.</p>
+    </footer>
+</body>
+</html>

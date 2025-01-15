@@ -1,0 +1,145 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Test Reports - ReadingApp</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.css">
+    <style>
+
+        
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">ReadingApp</div>
+            <ul class="nav-links">
+                <li><a href="{%url 'group4:g4redirectToTeacherDashboard'%}">Dashboard</a></li>
+                <li><a href="{%url 'group4:g4logout'%}">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <section class="results-section">
+            <h2>Student Test Reports</h2>
+            <div class="filters">
+                <div class="filter-item">
+                    <label for="searchName">Search by Name:</label>
+                    <input type="text" id="searchName" onkeyup="filterReports()">
+                </div>
+                <div class="filter-item">
+                    <label for="filterLevel">Filter by Level:</label>
+                    <select id="filterLevel" onchange="filterReports()">
+                        <option value="">All</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="dateRange">Date Range:</label>
+                    <input type="text" id="dateRange" onchange="filterReports()">
+                </div>
+                <div class="filter-item">
+                    <label for="sortOrder">Sort by:</label>
+                    <select id="sortOrder" onchange="filterReports()">
+                        <option value="name">Name</option>
+                        <option value="level">Level</option>
+                        <option value="score">Score</option>
+                        <option value="date">Date</option>
+                    </select>
+                </div>
+            </div>
+
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Test Name</th>
+                        <th>Test Level</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                        <!-- <th>Action</th> -->
+                    </tr>
+                </thead>
+                <tbody id="reportTable">
+                    {% for i in data %}
+                    <tr>
+                        <td>{{i.username}}</td>
+                        <td>{{i.title}}</td>
+                        <td>{{i.lvl}}</td>
+                        <td>{{i.score}}%</td>
+                        <td>{{i.date}}</td>
+                        <!-- <td><a href="test-detail.html" class="btn primary">Details</a></td> -->
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 ReadingApp. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr("#dateRange", {
+                mode: "range",
+                dateFormat: "Y-m-d"
+            });
+
+            // Save original rows
+            const originalRows = Array.from(document.getElementById('reportTable').getElementsByTagName('tr'));
+
+            window.filterReports = function() {
+                const searchName = document.getElementById('searchName').value.toLowerCase();
+                const filterLevel = document.getElementById('filterLevel').value;
+                const dateRange = document.getElementById('dateRange').value.split(' to ');
+                const sortOrder = document.getElementById('sortOrder').value;
+
+                const table = document.getElementById('reportTable');
+                const rows = originalRows.slice(); // Use a copy of the original rows
+
+                const filteredRows = rows.filter(row => {
+                    const cells = row.getElementsByTagName('td');
+                    const name = cells[0].textContent.toLowerCase();
+                    const level = cells[2].textContent;
+                    const date = cells[4].textContent;
+
+                    const matchesName = name.includes(searchName);
+                    const matchesLevel = !filterLevel || level === filterLevel;
+                    const matchesDate = (!dateRange[0] || new Date(date) >= new Date(dateRange[0])) && (!dateRange[1] || new Date(date) <= new Date(dateRange[1]));
+
+                    return matchesName && matchesLevel && matchesDate;
+                });
+
+                const sortedRows = filteredRows.sort((a, b) => {
+                    const aCells = a.getElementsByTagName('td');
+                    const bCells = b.getElementsByTagName('td');
+
+                    switch (sortOrder) {
+                        case 'name':
+                            return aCells[0].textContent.localeCompare(bCells[0].textContent);
+                        case 'level':
+                            return aCells[2].textContent.localeCompare(bCells[2].textContent);
+                        case 'score':
+                            return parseInt(bCells[3].textContent) - parseInt(aCells[3].textContent);
+                        case 'date':
+                            return new Date(aCells[4].textContent) - new Date(bCells[4].textContent);
+                        default:
+                            return 0;
+                    }
+                });
+
+                table.innerHTML = '';
+                sortedRows.forEach(row => table.appendChild(row));
+            }
+        });
+    </script>
+</body>
+</html>

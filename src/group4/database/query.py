@@ -65,6 +65,32 @@ def fetch_row_by_PRIMARY_KEY(mydb, table_name, id):
 
 import mysql.connector as mysql
 
+def g4saveResult(mydb, userid, readingid, date, score):
+    my_cursor = mydb.cursor()
+    
+    q = "INSERT INTO g4results(readinId, userid, date, score) VALUES(%s, %s, %s, %s)"
+    
+    try:
+        my_cursor.execute(q, (readingid, userid, date, score))
+        mydb.commit()
+    except Exception as e:
+        print("NU UH ", e)
+    finally:
+        my_cursor.close()
+
+def g4joinReadinResult(mydb):
+    my_cursor = mydb.cursor()
+    
+    q = "SELECT * FROM g4readings INNER JOIN g4results ON g4readings.id=g4results.readinId;"
+    try:
+        my_cursor.execute(q)
+        res = my_cursor.fetchall()
+        return res
+    except Exception as e:
+        print("NU UH ", e)
+    finally:
+        my_cursor.close()
+
 def g4savetip(mydb, title, description, username, file1=None):
     my_cursor = mydb.cursor()
     

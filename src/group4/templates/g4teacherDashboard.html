@@ -12,52 +12,45 @@
         <div class="navbar">
             <div class="logo">ReadingApp</div>
             <ul class="nav-links">
-                <li><a href="student-test-reports.html">Test Reports</a></li>
+                <li><a href="{%url 'group4:g4seeReports'%}">Test Reports</a></li>
                 <li><a href="{%url 'group4:g4uploadContent'%}">Upload Content</a></li>
                 <li><a href="{%url 'group4:g4createReading'%}">Create Test</a></li>
-                <li><a href="upload-course.html">Upload Course</a></li>
                 <li><a href="{%url 'group4:g4changeStudentLevel'%}">Change Level</a></li>
                 <li><a href="{%url 'group4:g4logout'%}">Logout</a></li>
             </ul>
         </div>
     </header>
 
+    <section class="welcome-section">
+        <h1>Welcome, {{username}}</h1>
+        <p>Manage your courses, upload materials, and view student progress reports.</p>
+    </section>
     <main class="dashboard-container">
-        <section class="welcome-section">
-            <h1>Welcome, {{username}}</h1>
-            <p>Manage your courses, upload materials, and view student progress reports.</p>
-        </section>
+        
 
         <section class="actions-section">
             <div class="action-card">
                 <h2>View Reports</h2>
                 <p>Check the test reports of your students.</p>
-                <a href="student-test-reports.html" class="btn">View Reports</a>
+                <a href="{%url 'group4:g4seeReports'%}" class="btn primary">View Reports</a>
             </div>
 
             <div class="action-card">
                 <h2>Upload Educational Content</h2>
                 <p>Share new reading materials or resources with your students.</p>
-                <a href="{%url 'group4:g4uploadContent'%}" class="btn">Upload Content</a>
-            </div>
-
-
-            <div class="action-card">
-                <h2>Upload Course</h2>
-                <p>Add new courses and manage student enrollments.</p>
-                <a href="upload-course.html" class="btn">Upload Course</a>
+                <a href="{%url 'group4:g4uploadContent'%}" class="btn primary">Upload Content</a>
             </div>
 
             <div class="action-card">
                 <h2>Change Student Level</h2>
                 <p>Adjust the learning level for each student based on their performance.</p>
-                <a href="{%url 'group4:g4changeStudentLevel'%}" class="btn">Change Level</a>
+                <a href="{%url 'group4:g4changeStudentLevel'%}" class="btn primary">Change Level</a>
             </div>
 
             <div class="action-card">
                 <h2>Create Reading Test</h2>
                 <p>Create new reading tests for your students.</p>
-                <a href="{%url 'group4:g4createReading'%}" class="btn">Create Test</a>
+                <a href="{%url 'group4:g4createReading'%}" class="btn primary">Create Test</a>
             </div>
         </section>
     </main>
