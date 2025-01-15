@@ -127,7 +127,7 @@ def spelling_view(request, word_id, start_index):
             word.save()  
 
             # spelling is correct -> go to next word in start learning
-            return redirect('group3:start-learning', box_num=old_box_num, start_index=start_index + 1)  
+            return redirect('group3:start-learning', box_num=old_box_num, start_index=start_index)  
         else:  # spelling is incorrect -> stay on this word in start learning
             return redirect('group3:start-learning', box_num=old_box_num, start_index=start_index)  
 
