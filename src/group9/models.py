@@ -3,70 +3,47 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Question(models.Model):
-    body = models.TextField(verbose_name="Question Body")
-    answer = models.TextField(verbose_name="Answer")
+    id = models.AutoField(primary_key=True)
+    body = models.TextField()
+    answer = models.TextField()
+def __str__(self):
+        return f"Question {self.id}: {self.body[:50]}..."
 
-    def __str__(self):
-        return f"Q{self.id}: {self.body[:50]}..."
 
 
 
 class Exam(models.Model):
     # Store the user's ID as an integer (not tied to the Django User model)
-    user = models.PositiveIntegerField(verbose_name="شناسه کاربر")
-
-    # Store a list of question IDs (integers) as JSON
-    questions = models.JSONField(default=list, verbose_name="شناسه سوالات")
-
-    score = models.DecimalField(
-        max_digits=5,
-        decimal_places=2,
-        default=0,
-        verbose_name="نمره"
-    )
-    date_taken = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="تاریخ آزمون"
-    )
-
+    id = models.AutoField(primary_key=True)
+    user_id = models.CharField(max_length=50)
+    questions = models.JSONField()
+    answers = models.JSONField(null=True, blank=True)
+    score = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    date_taken = models.DateTimeField()
     def __str__(self):
-        return f"Exam {self.id} (UserID: {self.user})"
-
-
-class Report(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='report', verbose_name="کاربر")
-    exams = models.ManyToManyField(Exam, related_name='reports', verbose_name="آزمون‌ها")
-
-    def __str__(self):
-        return f"گزارش {self.user.username}"
-
+        return f"Exam {self.id} by user {self.user_id}"
+    
 
 class Resource(models.Model):
-    title = models.CharField(max_length=255, verbose_name="عنوان")
-    author = models.CharField(max_length=255, verbose_name="نویسنده")
-    category = models.CharField(max_length=100, verbose_name="دسته‌بندی")
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    category = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.title
+        return f"Resource {self.id}: {self.title}"
 
 
 class Exercise(models.Model):
-    # Store the user's ID as a plain integer
-    user = models.PositiveIntegerField(verbose_name="شناسه کاربر")
-
-    # Store an array of question IDs (integers) in a JSON field
-    questions = models.JSONField(default=list, verbose_name="شناسه سوالات")
-
-    score = models.DecimalField(
-        max_digits=5,
-        decimal_places=2,
-        default=0,
-        verbose_name="نمره"
-    )
+    id = models.AutoField(primary_key=True)
+    user_id = models.CharField(max_length=50)
+    questions = models.JSONField()
+    answers = models.JSONField(null=True, blank=True)
+    score = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     date_completed = models.DateTimeField(
         auto_now_add=True,
         verbose_name="تاریخ تکمیل"
     )
 
     def __str__(self):
-        return f"تمرین {self.id} توسط کاربر {self.user}"
+        return f"Exercise {self.id} by user {self.user_id}"
