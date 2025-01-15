@@ -1,17 +1,111 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="fa">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحه خانه</title>
-    <link rel="stylesheet" href="{% static 'base/home_style.css' %}">
+    <title>Learn Words with Pictures</title>
+    <link rel="stylesheet" href="{% static 'group8/styles.css' %}">
+    <link rel="shortcut icon" href="{% static 'group8/favicon.png' %}" type="image/png">
+    <script defer src="{% static 'group8/script.js' %}"></script>
 </head>
+
 <body>
-    <div class="welcome-container">
-        <h1>خوش آمدید به گروه {{ group_number }}
-            میکروسرویس خود را اینجا توسعه دهید
-        </h1>
+    <header>
+        <div id="header-container">
+            <h1>Learn Words with Pictures</h1>
+            <button id = "logout-btn" aria-label="Logout">Logout</button>
+        </div>
+    </header>
+
+    <div id="main-content">
+        <div class="right-column">
+            <section id="search" class="corner-section">
+                <div id="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="search-bar" placeholder="Search by title, category, or level">
+                </div>
+            </section>
+
+            <section id="selection" class="corner-section">
+                <h2>Select Category and Level</h2>
+                <form>
+                    <label for="category">Category:</label>
+                    <select id="category">
+                        <option value="" selected enabled>Not selected</option>
+                        <option value="animals">Animals</option>
+                        <option value="objects">Objects</option>
+                        <option value="fruits">Fruits</option>
+                    </select>
+
+                    <label for="level">Level:</label>
+                    <select id="level">
+                        <option value="" selected enabled>Not selected</option>
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+
+                    <button type="button" id="start-btn">Start Learning</button>
+                </form>
+            </section>
+
+            <section id="add-word" class="corner-section">
+                <form method="GET" action="{% url 'group8:add_word_page' %}">
+                    <button type="submit">+</button>
+                </form>
+            </section>
+
+            <section id="progress" class="corner-section">
+                <form method="GET" action="{% url 'group8:progress' %}">
+                    <button type="submit">📊</button>
+                </form>
+            </section>
+        </div>
+
+        <section id="words" class="centered-section">
+            <h2>Words List</h2>
+            <ul id="word-list"></ul>
+            <div id="pagination-controls"></div>
+        </section>
     </div>
+    <script>
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                const response = await fetch("{% url 'group8:logout8' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                });
+                if (response.ok) {
+                    window.location.href = "{% url 'group8:login8' %}";
+                } else {
+                    alert('Logout failed.');
+                   
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
 </body>
+
 </html>
