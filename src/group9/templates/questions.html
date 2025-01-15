@@ -1,21 +1,95 @@
-<!-- group9/templates/group9/questions.html -->
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Writing - Questions</title>
+<!-- saved from url=(0022)chrome://new-tab-page/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Writing - Questions</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    .questions-container {
+      background: rgba(255, 255, 255, 0.85);
+      width: 700px;
+      max-width: 90%;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .questions-container h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    ol {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    li {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      color: #555;
+    }
+
+    li strong {
+      font-weight: bold;
+      color: #333;
+    }
+
+    li em {
+      color: #777;
+      font-style: italic;
+    }
+
+    .back-home-btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background-color: #4a90e2;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+      text-align: center;
+    }
+
+    .back-home-btn:hover {
+      background: #3a78c1;
+    }
+
+    .button-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+  </style>
 </head>
 <body>
+  <div class="questions-container">
     <h1>Sample Questions for Writing</h1>
     <ol>
-        {% for q in questions %}
-            <li>
-                <strong>Q{{ q.id }}: </strong>{{ q.body }}
-                <br>
-                <em>Sample Answer:</em> {{ q.answer }}
-            </li>
-        {% endfor %}
+      {% for q in questions %}
+      <li>
+        <strong>Q{{ q.id }}:</strong> {{ q.body }}<br>
+        <em>Sample Answer:</em> {{ q.answer }}
+      </li>
+      {% endfor %}
     </ol>
-    <p><a href="{% url 'group9:group9' %}">Back Home</a></p>
-</body>
-</html>
+    <div class="button-container">
+      <a href="chrome://new-tab-page/%7B%%20url%20&#39;group9:group9&#39;%20%%7D" class="back-home-btn">Back Home</a>
+    </div>
+  </div>
+
+
+</body></html>
