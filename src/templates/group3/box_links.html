@@ -1,0 +1,13 @@
+<!-- templates/group3/box_links.html -->
+
+{% load humanize %} {% for box in boxes %} 
+{% if box.number == 9 %}
+<a href="{% url 'group3:learned'%}">
+  🗃 Learned Box <mark>{{ box.word_count }}</mark>
+</a>
+{% else %}
+<a href="{% url 'group3:box' box_num=box.number%}">
+  🗃 {{ box.number | ordinal }} Box <mark>{{ box.word_count }}</mark>
+</a>
+{% endif %}
+{% endfor %}
