@@ -1,0 +1,8 @@
+<!-- templates/group3/navigation.html -->
+
+{% load words_tags %}
+
+<nav>
+  <a href="{% url 'group3:word-list' %}">🗂 All Words</a>
+  {% boxes_as_links %}
+</nav>

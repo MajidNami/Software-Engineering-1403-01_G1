@@ -1,0 +1,21 @@
+<!-- templates/group3/base.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tick-8 Box</title>
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Tick-8 Box App</h1>
+      {% include "group3/navigation.html" %}
+    </header>
+    <main>
+      {% block content %}
+      <h2>Box is Empty!</h2>
+      {% endblock content %}
+    </main>
+  </body>
+</html>
